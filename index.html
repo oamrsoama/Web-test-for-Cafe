@@ -1,0 +1,2351 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>باقات المواقع — كافيهات</title>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;900&family=Tajawal:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --bg: #0a0a0a;
+  --surface: #131313;
+  --card: #181818;
+  --card-hover: #1e1e1e;
+  --border: #242424;
+  --border-subtle: #1c1c1c;
+  --gold: #c9933a;
+  --gold-light: #e8b464;
+  --gold-bright: #f5c876;
+  --gold-dim: #7a5520;
+  --gold-glow: rgba(201,147,58,0.15);
+  --gold-glow-strong: rgba(201,147,58,0.3);
+  --text: #f0ece4;
+  --text-sec: #8a8276;
+  --text-dim: #4a463f;
+  --green: #4db87a;
+  --green-bg: #0d1f15;
+  --green-border: #1a4a2d;
+  --radius: 16px;
+  --radius-sm: 10px;
+  --radius-xs: 8px;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Cairo', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  padding: 0 0 80px;
+  overflow-x: hidden;
+}
+
+/* ========== SCROLL PROGRESS ========== */
+#scroll-progress {
+  position: fixed;
+  top: 0; left: 0;
+  width: 0%;
+  height: 2px;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold), var(--gold-bright));
+  z-index: 9999;
+  transition: width 0.1s linear;
+}
+
+/* ========== ANIMATED BG ========== */
+.bg-canvas {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.06;
+  animation: orbDrift 18s ease-in-out infinite alternate;
+}
+.bg-orb-1 {
+  width: 600px; height: 600px;
+  background: var(--gold);
+  top: -200px; left: 50%;
+  transform: translateX(-50%);
+  animation-duration: 14s;
+}
+.bg-orb-2 {
+  width: 400px; height: 400px;
+  background: var(--gold-light);
+  bottom: 20%; right: -100px;
+  opacity: 0.04;
+  animation-duration: 20s;
+  animation-direction: alternate-reverse;
+}
+.bg-dots {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(201,147,58,0.12) 1px, transparent 1px);
+  background-size: 40px 40px;
+  opacity: 0.5;
+  animation: dotsDrift 40s linear infinite;
+}
+
+@keyframes orbDrift {
+  0% { transform: translateX(-50%) translateY(0) scale(1); }
+  100% { transform: translateX(-50%) translateY(-60px) scale(1.1); }
+}
+@keyframes dotsDrift {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 40px; }
+}
+
+/* ========== KEYFRAMES ========== */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(24px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes glowPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+@keyframes shimmer {
+  0% { background-position: -200% 0; }
+  100% { background-position: 200% 0; }
+}
+@keyframes revealText {
+  from { clip-path: inset(0 100% 0 0); opacity: 0; }
+  to { clip-path: inset(0 0% 0 0); opacity: 1; }
+}
+@keyframes borderGlow {
+  0%, 100% { box-shadow: 0 0 20px rgba(201,147,58,0.15), 0 0 40px rgba(201,147,58,0.05); }
+  50% { box-shadow: 0 0 30px rgba(201,147,58,0.3), 0 0 60px rgba(201,147,58,0.1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-8px); }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes shine {
+  0% { left: -100%; }
+  100% { left: 200%; }
+}
+@keyframes pulse-ring {
+  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(201,147,58,0.4); }
+  70% { transform: scale(1); box-shadow: 0 0 0 10px rgba(201,147,58,0); }
+  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(201,147,58,0); }
+}
+@keyframes ripple {
+  to { transform: scale(4); opacity: 0; }
+}
+@keyframes scaleIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to { opacity: 1; transform: scale(1); }
+}
+@keyframes slideUp {
+  from { opacity: 0; transform: translateY(40px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@keyframes cardGlow {
+  0%, 100% { box-shadow: 0 0 0 1px var(--gold-dim), 0 0 20px var(--gold-glow), 0 20px 40px -10px rgba(0,0,0,0.5); }
+  50% { box-shadow: 0 0 0 1px var(--gold), 0 0 35px var(--gold-glow-strong), 0 20px 40px -10px rgba(0,0,0,0.6); }
+}
+
+/* ========== HERO ========== */
+.hero {
+  position: relative;
+  padding: 90px 24px 70px;
+  text-align: center;
+  border-bottom: 1px solid var(--border);
+  overflow: hidden;
+  z-index: 1;
+}
+.hero-line-top {
+  position: absolute;
+  top: 0; left: 50%;
+  transform: translateX(-50%);
+  width: 700px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  opacity: 0.6;
+}
+.hero-glow {
+  position: absolute;
+  top: -150px; left: 50%;
+  transform: translateX(-50%);
+  width: 600px; height: 400px;
+  background: radial-gradient(ellipse, rgba(201,147,58,0.12) 0%, transparent 70%);
+  pointer-events: none;
+}
+.hero-eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  text-transform: uppercase;
+  margin-bottom: 28px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.1s both;
+}
+.hero-eyebrow::before, .hero-eyebrow::after {
+  content: '';
+  width: 30px; height: 1px;
+  background: linear-gradient(90deg, transparent, var(--gold-dim));
+}
+.hero-eyebrow::after {
+  background: linear-gradient(270deg, transparent, var(--gold-dim));
+}
+.hero-title {
+  font-family: 'Tajawal', 'Cairo', sans-serif;
+  font-size: clamp(30px, 5.5vw, 58px);
+  font-weight: 900;
+  line-height: 1.25;
+  color: var(--text);
+  margin-bottom: 20px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.25s both;
+}
+.hero-title .accent {
+  display: inline-block;
+  background: linear-gradient(90deg, var(--gold-dim), var(--gold-bright), var(--gold), var(--gold-light), var(--gold-bright));
+  background-size: 300% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: shimmer 5s linear infinite;
+}
+.hero-sub {
+  font-size: 16px;
+  color: var(--text-sec);
+  max-width: 540px;
+  margin: 0 auto 36px;
+  line-height: 1.85;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.4s both;
+}
+.hero-note {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #1c1810;
+  border: 1px solid var(--gold-dim);
+  border-radius: 100px;
+  padding: 9px 22px;
+  font-size: 13px;
+  color: var(--gold-light);
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.55s both;
+}
+.hero-note-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  animation: glowPulse 2s ease-in-out infinite;
+}
+.hero-actions {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 32px;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.7s both;
+}
+
+/* ========== HERO BUTTONS ========== */
+.hero-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 28px;
+  border-radius: var(--radius-sm);
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  border: 1px solid transparent;
+  position: relative;
+  overflow: hidden;
+}
+.hero-btn-primary {
+  background: linear-gradient(135deg, var(--gold), var(--gold-light));
+  color: #0a0a0a;
+  box-shadow: 0 4px 20px rgba(201,147,58,0.25);
+}
+.hero-btn-primary::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.25), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.5s ease;
+}
+.hero-btn-primary:hover::after { left: 200%; }
+.hero-btn-primary:hover {
+  background: linear-gradient(135deg, var(--gold-light), var(--gold-bright));
+  transform: translateY(-3px);
+  box-shadow: 0 10px 30px rgba(201,147,58,0.4);
+}
+.hero-btn-secondary {
+  background: transparent;
+  border-color: var(--border);
+  color: var(--text);
+}
+.hero-btn-secondary:hover {
+  border-color: var(--gold-dim);
+  color: var(--gold-light);
+  transform: translateY(-2px);
+  background: rgba(201,147,58,0.05);
+}
+
+/* Hero trust row */
+.hero-trust-row {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 24px;
+  margin: 28px auto 0;
+  padding: 18px 28px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: fit-content;
+  max-width: 100%;
+  position: relative;
+  z-index: 1;
+  opacity: 0;
+  animation: fadeUp 0.7s ease 0.55s both;
+}
+.hero-trust-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
+}
+.hero-trust-num {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: var(--gold-light);
+  line-height: 1;
+}
+.hero-trust-label {
+  font-size: 11px;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+.hero-trust-divider {
+  width: 1px;
+  height: 32px;
+  background: var(--border);
+  flex-shrink: 0;
+}
+@media (max-width: 480px) {
+  .hero-trust-row { gap: 16px; padding: 14px 18px; }
+  .hero-trust-num { font-size: 15px; }
+}
+
+/* ========== AVAILABILITY BADGE ========== */
+.availability-bar {
+  max-width: 520px;
+  margin: 48px auto 0;
+  padding: 0 20px;
+}
+.availability-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  background: linear-gradient(135deg, #0e0b07 0%, #141008 100%);
+  border: 1px solid rgba(201,147,58,0.4);
+  border-radius: 100px;
+  padding: 13px 28px;
+  box-shadow:
+    0 0 0 1px rgba(201,147,58,0.08),
+    0 4px 24px rgba(201,147,58,0.1),
+    inset 0 1px 0 rgba(245,200,118,0.06);
+}
+.availability-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 8px rgba(201,147,58,0.8);
+  animation: glowPulse 2s ease-in-out infinite;
+  flex-shrink: 0;
+}
+.availability-text {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--gold-light);
+  letter-spacing: 0.3px;
+}
+.availability-sep {
+  color: var(--gold-dim);
+  font-size: 13px;
+}
+.availability-sub {
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--text-sec);
+  letter-spacing: 0.2px;
+}
+@media (max-width: 480px) {
+  .availability-inner { flex-wrap: wrap; gap: 6px; padding: 12px 20px; }
+  .availability-sep { display: none; }
+  .availability-sub { width: 100%; text-align: center; }
+}
+
+/* Pro card elevated hierarchy */
+.packages-grid {
+  align-items: center;
+}
+.pkg-pro {
+  transform: scale(1.04) translateY(-14px) !important;
+  z-index: 2;
+}
+.pkg-pro:hover {
+  transform: scale(1.06) translateY(-20px) !important;
+}
+@media (max-width: 768px) {
+  .pkg-pro {
+    transform: none !important;
+  }
+  .pkg-pro:hover {
+    transform: translateY(-5px) !important;
+  }
+}
+
+/* ========== SECTION HEADER ========== */
+.section-label {
+  font-size: 11px;
+  letter-spacing: 2.5px;
+  color: var(--text-dim);
+  text-transform: uppercase;
+  text-align: center;
+  margin-bottom: 16px;
+}
+.section-title {
+  font-family: 'Tajawal', sans-serif;
+  font-size: clamp(22px, 4vw, 32px);
+  font-weight: 800;
+  color: var(--text);
+  text-align: center;
+  margin-bottom: 12px;
+}
+.section-title .gold { color: var(--gold-light); }
+.section-sub {
+  font-size: 14px;
+  color: var(--text-sec);
+  text-align: center;
+  max-width: 480px;
+  margin: 0 auto 48px;
+  line-height: 1.7;
+}
+
+/* ========== FEATURES CARDS ========== */
+.features-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 60px 20px 0;
+  position: relative;
+  z-index: 1;
+}
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.feat-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px;
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+  cursor: default;
+}
+.feat-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(201,147,58,0.06), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+.feat-card:hover::before { opacity: 1; }
+.feat-card:hover {
+  border-color: var(--gold-dim);
+  transform: translateY(-6px);
+  box-shadow: 0 20px 40px -15px rgba(0,0,0,0.5), 0 0 0 1px rgba(201,147,58,0.1);
+}
+.feat-card-icon {
+  font-size: 32px;
+  margin-bottom: 18px;
+  display: block;
+  transition: transform 0.3s ease;
+}
+.feat-card:hover .feat-card-icon { transform: scale(1.15); }
+.feat-card-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 10px;
+}
+.feat-card-text {
+  font-size: 13px;
+  color: var(--text-sec);
+  line-height: 1.75;
+}
+
+/* ========== PORTFOLIO SECTION ========== */
+.portfolio-section {
+  max-width: 1000px;
+  margin: 70px auto 0;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.portfolio-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: all 0.35s ease;
+  position: relative;
+}
+.portfolio-card:hover {
+  border-color: var(--gold-dim);
+  transform: translateY(-8px);
+  box-shadow: 0 24px 48px -16px rgba(0,0,0,0.6), 0 0 20px rgba(201,147,58,0.08);
+}
+.portfolio-thumb {
+  width: 100%;
+  height: 170px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 42px;
+  position: relative;
+  overflow: hidden;
+}
+.portfolio-thumb::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, var(--card) 0%, transparent 60%);
+}
+.portfolio-thumb-1 { background: linear-gradient(135deg, #2a1f0a 0%, #1c1c1c 100%); }
+.portfolio-thumb-2 { background: linear-gradient(135deg, #14201a 0%, #1c1c1c 100%); }
+.portfolio-thumb-3 { background: linear-gradient(135deg, #1c1320 0%, #1c1c1c 100%); }
+.portfolio-thumb-emoji {
+  position: relative;
+  z-index: 1;
+  transition: transform 0.35s ease;
+}
+.portfolio-card:hover .portfolio-thumb-emoji { transform: scale(1.2); }
+.portfolio-body { padding: 20px; }
+.portfolio-name {
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.portfolio-desc {
+  font-size: 12.5px;
+  color: var(--text-sec);
+  line-height: 1.65;
+  margin-bottom: 18px;
+  min-height: 38px;
+}
+.portfolio-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px;
+  border-radius: var(--radius-xs);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--gold-light);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+.portfolio-btn:hover {
+  background: #1e1a10;
+  border-color: var(--gold-dim);
+}
+
+/* ========== VALUE CARDS ========== */
+.value-section {
+  max-width: 960px;
+  margin: 70px auto 0;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.value-card {
+  position: relative;
+  background: linear-gradient(165deg, rgba(255,255,255,0.025) 0%, transparent 55%), var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  transition: transform 0.3s cubic-bezier(.2,.8,.2,1), box-shadow 0.3s ease, border-color 0.3s ease;
+  cursor: default;
+  overflow: hidden;
+}
+.value-card::before {
+  content: '';
+  position: absolute;
+  top: -50%; left: 50%;
+  transform: translateX(-50%);
+  width: 160px; height: 160px;
+  border-radius: 50%;
+  background: var(--gold-glow);
+  filter: blur(36px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.value-card:hover {
+  transform: translateY(-5px);
+  border-color: var(--gold-dim);
+  box-shadow: 0 18px 36px -14px rgba(0,0,0,0.5), 0 0 24px var(--gold-glow);
+}
+.value-card:hover::before { opacity: 1; }
+.value-icon-badge {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  background: rgba(201,147,58,0.10);
+  border: 1px solid rgba(201,147,58,0.28);
+  color: var(--gold-light);
+  margin-bottom: 4px;
+  position: relative;
+  z-index: 1;
+}
+.value-card-title { font-size: 14px; font-weight: 700; color: var(--text); position: relative; z-index: 1; }
+.value-card-text { font-size: 13px; color: var(--text-sec); line-height: 1.7; position: relative; z-index: 1; }
+
+/* ========== PACKAGES SECTION ========== */
+.packages-section {
+  max-width: 1060px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+.packages-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 20px;
+  align-items: end;
+}
+
+/* Base card */
+.pkg {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px 28px;
+  display: flex;
+  flex-direction: column;
+  transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+  overflow: hidden;
+}
+.pkg::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% -20%, rgba(201,147,58,0.04), transparent 65%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.pkg:hover::before { opacity: 1; }
+
+/* Starter - smaller */
+.pkg-starter {
+  min-height: 520px;
+  padding-top: 24px;
+  padding-bottom: 24px;
+}
+.pkg-starter:hover {
+  border-color: #3a3a3a;
+  transform: translateY(-5px);
+  box-shadow: 0 16px 32px -12px rgba(0,0,0,0.5);
+}
+
+/* Pro - biggest, most prominent */
+.pkg-pro {
+  min-height: 720px;
+  border-color: var(--gold-dim) !important;
+  background: #0f0d08;
+  animation: cardGlow 4s ease-in-out infinite;
+  transform: scale(1.02);
+  z-index: 2;
+}
+.pkg-pro:hover {
+  transform: scale(1.04) translateY(-6px);
+  box-shadow: 0 30px 60px -20px rgba(0,0,0,0.7), 0 0 50px rgba(201,147,58,0.2);
+}
+.pkg-pro .pro-corner-glow {
+  position: absolute;
+  top: -60px; left: 50%;
+  transform: translateX(-50%);
+  width: 300px; height: 200px;
+  background: radial-gradient(ellipse, rgba(201,147,58,0.12), transparent 70%);
+  pointer-events: none;
+}
+
+/* Premium — Diamond Elite */
+:root {
+  --diamond: #00D4FF;
+  --diamond-mid: #4FC3FF;
+  --diamond-light: #8BE9FF;
+  --diamond-pale: #EAFBFF;
+  --diamond-glow: rgba(0, 212, 255, 0.18);
+  --diamond-glow-strong: rgba(0, 212, 255, 0.35);
+  --diamond-bg: rgba(0, 212, 255, 0.04);
+}
+
+@keyframes diamondFloat {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-7px); }
+}
+@keyframes diamondShine {
+  0%   { left: -120%; opacity: 0; }
+  10%  { opacity: 1; }
+  90%  { opacity: 1; }
+  100% { left: 140%; opacity: 0; }
+}
+@keyframes diamondBorderPulse {
+  0%, 100% { opacity: 0.65; }
+  50%       { opacity: 1; }
+}
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0) rotate(0deg); }
+  50%       { opacity: 1; transform: scale(1) rotate(180deg); }
+}
+
+.pkg-premium {
+  min-height: 660px;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,212,255,0.07) 0%, transparent 70%),
+    linear-gradient(160deg, #080d12 0%, #0a0e14 50%, #080b10 100%);
+  border: 1px solid transparent !important;
+  border-radius: var(--radius);
+  position: relative;
+  animation: diamondFloat 5s ease-in-out infinite;
+  z-index: 3;
+}
+
+/* Glowing diamond border via pseudo-element */
+.pkg-premium::before {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: calc(var(--radius) + 1px);
+  background: linear-gradient(
+    145deg,
+    rgba(0,212,255,0.9) 0%,
+    rgba(79,195,255,0.4) 25%,
+    rgba(0,212,255,0.1) 50%,
+    rgba(139,233,255,0.5) 75%,
+    rgba(0,212,255,0.9) 100%
+  );
+  animation: diamondBorderPulse 3s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* Inner card fill sits above the border gradient */
+.pkg-premium::after {
+  content: '';
+  position: absolute;
+  inset: 1px;
+  border-radius: calc(var(--radius) - 1px);
+  background:
+    radial-gradient(ellipse 70% 50% at 50% 0%, rgba(0,212,255,0.06) 0%, transparent 65%),
+    linear-gradient(160deg, #080d12 0%, #0a0e14 60%, #080b10 100%);
+  z-index: 1;
+  pointer-events: none;
+}
+
+/* All direct children must sit above the ::after fill */
+.pkg-premium > * { position: relative; z-index: 2; }
+
+/* Ambient blue glow behind card */
+.pkg-premium-ambient {
+  position: absolute;
+  inset: -40px -30px;
+  background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(0,212,255,0.09), transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  filter: blur(20px);
+}
+
+/* Animated shine sweep */
+.pkg-premium-shine {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius);
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 3;
+}
+.pkg-premium-shine::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -120%;
+  width: 55%;
+  height: 100%;
+  background: linear-gradient(
+    105deg,
+    transparent 0%,
+    rgba(139,233,255,0.04) 40%,
+    rgba(0,212,255,0.10) 50%,
+    rgba(139,233,255,0.04) 60%,
+    transparent 100%
+  );
+  transform: skewX(-18deg);
+  animation: diamondShine 7s ease-in-out infinite;
+  animation-delay: 1.5s;
+}
+
+/* TOP TIER ribbon */
+.pkg-premium-ribbon {
+  position: absolute;
+  top: 18px;
+  left: -1px;
+  background: linear-gradient(90deg, #00D4FF, #4FC3FF);
+  color: #030c12;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  padding: 5px 14px 5px 12px;
+  border-radius: 0 100px 100px 0;
+  box-shadow: 0 2px 12px rgba(0,212,255,0.4);
+  z-index: 4;
+  white-space: nowrap;
+}
+
+/* Sparkling particles */
+.pkg-premium-sparks {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 4;
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+.spark {
+  position: absolute;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: var(--diamond-light);
+  animation: sparkle ease-in-out infinite;
+}
+.spark:nth-child(1) { top: 12%; left: 88%; animation-duration: 3.2s; animation-delay: 0s; }
+.spark:nth-child(2) { top: 28%; left: 6%;  animation-duration: 4.1s; animation-delay: 0.8s; }
+.spark:nth-child(3) { top: 72%; left: 92%; animation-duration: 3.7s; animation-delay: 1.4s; }
+.spark:nth-child(4) { top: 55%; left: 4%;  animation-duration: 4.5s; animation-delay: 0.3s; }
+.spark:nth-child(5) { top: 88%; left: 78%; animation-duration: 3.0s; animation-delay: 1.9s; }
+.spark:nth-child(6) { top: 18%; left: 55%; animation-duration: 4.8s; animation-delay: 2.5s; }
+
+/* Diamond badge */
+.badge-platinum {
+  background: linear-gradient(135deg, rgba(0,212,255,0.12), rgba(79,195,255,0.06));
+  color: var(--diamond-light);
+  border: 1px solid rgba(0,212,255,0.45);
+  box-shadow: 0 0 14px rgba(0,212,255,0.15), inset 0 1px 0 rgba(139,233,255,0.2);
+  letter-spacing: 2px;
+}
+
+/* Feature check icons — diamond tint */
+.pkg-premium .feat-icon.yes {
+  background: rgba(0,212,255,0.08);
+  color: var(--diamond);
+  border: 1px solid rgba(0,212,255,0.2);
+}
+.pkg-premium .feat-highlight {
+  color: var(--diamond);
+}
+.pkg-premium .highlight-feat {
+  background: rgba(0,212,255,0.06);
+}
+
+/* Price — crystal treatment */
+.pkg-premium .price-num {
+  background: linear-gradient(135deg, var(--diamond-pale) 0%, var(--diamond-light) 40%, var(--diamond) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-size: 52px;
+  filter: drop-shadow(0 0 12px rgba(0,212,255,0.3));
+}
+.pkg-premium .price-unit { color: var(--diamond-mid); opacity: 0.8; }
+.pkg-premium .pkg-pricing {
+  background: rgba(0,212,255,0.04);
+  border-color: rgba(0,212,255,0.12);
+}
+.pkg-premium .price-monthly strong { color: var(--diamond-light); }
+.pkg-premium .delivery-tag {
+  background: rgba(0,212,255,0.05);
+  border-color: rgba(0,212,255,0.15);
+}
+.pkg-premium .delivery-tag span { color: var(--diamond-mid); }
+
+/* Divider */
+.pkg-premium .pkg-divider {
+  background: linear-gradient(90deg, transparent, rgba(0,212,255,0.3), transparent);
+}
+
+/* Hover */
+.pkg-premium:hover {
+  animation-play-state: paused;
+  transform: translateY(-8px);
+  box-shadow:
+    0 32px 64px -20px rgba(0,0,0,0.7),
+    0 0 60px rgba(0,212,255,0.12);
+}
+.pkg-premium:hover::before {
+  background: linear-gradient(
+    145deg,
+    rgba(0,212,255,1) 0%,
+    rgba(79,195,255,0.6) 25%,
+    rgba(0,212,255,0.2) 50%,
+    rgba(139,233,255,0.7) 75%,
+    rgba(0,212,255,1) 100%
+  );
+}
+
+/* CTA button — glowing blue gradient */
+.btn-premium {
+  background: linear-gradient(135deg, #0099bb 0%, #00D4FF 50%, #4FC3FF 100%);
+  background-size: 200% auto;
+  border: none;
+  color: #020f16;
+  font-weight: 800;
+  font-size: 14.5px;
+  letter-spacing: 0.3px;
+  box-shadow:
+    0 4px 20px rgba(0,212,255,0.35),
+    0 0 0 1px rgba(0,212,255,0.2);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-premium::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.18), transparent 60%);
+  pointer-events: none;
+}
+.btn-premium:hover {
+  background-position: right center;
+  box-shadow:
+    0 8px 30px rgba(0,212,255,0.5),
+    0 0 0 1px rgba(0,212,255,0.4);
+  transform: scale(1.02);
+  color: #010a10;
+  filter: brightness(1.06);
+}
+
+/* ========== BADGE ========== */
+.pkg-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 5px 14px;
+  border-radius: 100px;
+  margin-bottom: 20px;
+  width: fit-content;
+}
+.badge-gray { background: #202020; color: var(--text-sec); }
+.badge-gold {
+  background: #2a1a05;
+  color: var(--gold-bright);
+  border: 1px solid var(--gold-dim);
+  box-shadow: 0 0 12px rgba(201,147,58,0.15);
+}
+.badge-green { background: var(--green-bg); color: var(--green); border: 1px solid var(--green-border); }
+.badge-platinum {
+  background: linear-gradient(135deg, #1a1610 0%, #2a2218 100%);
+  color: var(--gold-bright);
+  border: 1px solid var(--gold);
+  box-shadow: 0 0 16px rgba(201,147,58,0.2), inset 0 1px 0 rgba(245,200,118,0.15);
+  letter-spacing: 2px;
+}
+
+.pkg-name {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 8px;
+}
+.pkg-pro .pkg-name { font-size: 22px; }
+.pkg-desc {
+  font-size: 13px;
+  color: var(--text-sec);
+  line-height: 1.65;
+  margin-bottom: 24px;
+  min-height: 40px;
+}
+
+/* ========== PRICING ========== */
+.pkg-pricing {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 18px;
+  margin-bottom: 24px;
+  border: 1px solid var(--border-subtle);
+}
+.pkg-pro .pkg-pricing {
+  background: #191410;
+  border-color: rgba(201,147,58,0.15);
+}
+.price-setup {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 8px;
+}
+.price-num {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 42px;
+  font-weight: 900;
+  color: var(--text);
+  line-height: 1;
+}
+.pkg-pro .price-num {
+  font-size: 52px;
+  background: linear-gradient(135deg, var(--gold-light), var(--gold-bright));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.price-unit {
+  font-size: 13px;
+  color: var(--text-dim);
+}
+.price-monthly {
+  font-size: 12px;
+  color: var(--text-sec);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 14px;
+  unicode-bidi: isolate;
+}
+.price-monthly strong {
+  color: var(--gold-light);
+  font-weight: 600;
+  font-size: 13px;
+}
+.price-monthly.free strong { color: var(--green); }
+.delivery-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-xs);
+  padding: 7px 12px;
+  font-size: 12px;
+  color: var(--text-sec);
+  unicode-bidi: isolate;
+}
+.delivery-tag span { color: var(--gold-light); font-weight: 600; unicode-bidi: isolate; }
+
+/* ========== FEATURES LIST ========== */
+.pkg-divider {
+  height: 1px;
+  background: var(--border);
+  margin: 0 0 20px;
+}
+.pkg-features {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-bottom: 24px;
+  flex: 1;
+}
+.feat {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.feat-icon {
+  width: 18px; height: 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  margin-top: 1px;
+}
+.feat-icon.yes { background: var(--green-bg); color: var(--green); }
+.feat-icon.no  { background: #1a1a1a; color: var(--text-dim); }
+.feat.yes-feat { color: var(--text); }
+.feat.no-feat  { color: var(--text-dim); }
+.feat-highlight { color: var(--green); font-weight: 700; }
+.highlight-feat { background: #0d1f15; border-radius: 6px; padding: 6px 8px; margin: 2px -8px; }
+
+/* ========== CTA BUTTONS ========== */
+.pkg-cta { margin-top: auto; }
+
+.btn-main {
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-sm);
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  border: 1px solid var(--border);
+  background: var(--surface);
+  color: var(--text);
+  transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+}
+.btn-link { display: block; text-align: center; text-decoration: none; }
+.btn-main:hover { background: #222; border-color: #3a3a3a; transform: scale(1.02); }
+
+.btn-gold-pro {
+  background: linear-gradient(135deg, #b8822e, var(--gold), #e8b464);
+  background-size: 200% auto;
+  color: #0a0a0a;
+  border: none;
+  font-size: 15px;
+  padding: 16px;
+  box-shadow: 0 6px 20px rgba(201,147,58,0.3);
+  animation: shimmer 5s linear infinite;
+}
+.btn-gold-pro::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 60%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+  transform: skewX(-20deg);
+  transition: left 0.6s ease;
+}
+.btn-gold-pro:hover::before { left: 200%; }
+.btn-gold-pro:hover {
+  box-shadow: 0 12px 30px rgba(201,147,58,0.5);
+  transform: scale(1.03);
+  filter: brightness(1.08);
+}
+
+/* ========== COMPARISON (luxury redesign) ========== */
+@keyframes comparePremiumPulse {
+  0%, 100% { box-shadow: 0 0 0 1px rgba(0,212,255,0.35), 0 0 24px rgba(0,212,255,0.10), 0 24px 48px -16px rgba(0,0,0,0.6); }
+  50%      { box-shadow: 0 0 0 1px rgba(0,212,255,0.6),  0 0 38px rgba(0,212,255,0.22), 0 24px 48px -16px rgba(0,0,0,0.65); }
+}
+@keyframes compareDiamondSpin {
+  0%   { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+.compare-section {
+  max-width: 1040px;
+  margin: 90px auto 0;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+.compare-section .section-title { margin-bottom: 8px; }
+.compare-section .section-sub { margin-bottom: 44px; }
+
+.compare-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+
+/* ---- Base card: glassmorphism shell ---- */
+.compare-card {
+  position: relative;
+  background: linear-gradient(165deg, rgba(255,255,255,0.025) 0%, rgba(255,255,255,0.0) 60%), var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 26px 20px 22px;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  transition: transform 0.35s cubic-bezier(.2,.8,.2,1), box-shadow 0.35s ease, border-color 0.35s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.compare-card::before {
+  /* soft top glow accent, tinted per-tier */
+  content: '';
+  position: absolute;
+  top: -60%; left: 50%;
+  transform: translateX(-50%);
+  width: 220px; height: 220px;
+  border-radius: 50%;
+  filter: blur(40px);
+  opacity: 0.5;
+  pointer-events: none;
+  z-index: 0;
+}
+.compare-card > * { position: relative; z-index: 1; }
+.compare-card:hover { transform: translateY(-6px); }
+
+/* ---- Starter: refined neutral ---- */
+.compare-card.tier-starter {
+  border-color: var(--border);
+  background: linear-gradient(165deg, rgba(255,255,255,0.03) 0%, transparent 55%), #14141480;
+}
+.compare-card.tier-starter::before { background: rgba(180,180,180,0.10); }
+.compare-card.tier-starter:hover { border-color: #3a3a3a; box-shadow: 0 20px 40px -16px rgba(0,0,0,0.55); }
+.compare-card.tier-starter .compare-card-name { color: var(--text-sec); }
+.compare-card.tier-starter .compare-icon-badge { background: rgba(255,255,255,0.06); color: var(--text-sec); border: 1px solid rgba(255,255,255,0.12); }
+
+/* ---- Pro: premium gold ---- */
+.compare-card.tier-pro {
+  border-color: var(--gold-dim);
+  background: linear-gradient(165deg, rgba(201,147,58,0.08) 0%, transparent 60%), #14110a;
+  transform: scale(1.015);
+}
+.compare-card.tier-pro::before { background: var(--gold-glow-strong); }
+.compare-card.tier-pro:hover { box-shadow: 0 26px 50px -18px rgba(0,0,0,0.6), 0 0 36px var(--gold-glow); }
+.compare-card.tier-pro .compare-card-name { color: var(--gold-light); }
+.compare-card.tier-pro .compare-icon-badge { background: rgba(201,147,58,0.12); color: var(--gold-light); border: 1px solid rgba(201,147,58,0.35); }
+.compare-card.tier-pro .compare-price { color: var(--gold-light); }
+
+/* ---- Premium: luxury diamond, visually superior ---- */
+.compare-card.tier-premium {
+  border: 1px solid transparent;
+  background:
+    radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,212,255,0.10) 0%, transparent 70%),
+    linear-gradient(160deg, #080d12 0%, #0a0e14 55%, #080b10 100%);
+  transform: scale(1.035);
+  animation: comparePremiumPulse 4s ease-in-out infinite;
+  z-index: 2;
+}
+.compare-card.tier-premium::before { background: var(--diamond-glow-strong); width: 280px; height: 280px; opacity: 0.7; }
+.compare-card.tier-premium::after {
+  content: '';
+  position: absolute;
+  inset: -1px;
+  border-radius: 19px;
+  background: linear-gradient(145deg, rgba(0,212,255,0.9) 0%, rgba(79,195,255,0.35) 25%, rgba(0,212,255,0.08) 50%, rgba(139,233,255,0.45) 75%, rgba(0,212,255,0.9) 100%);
+  z-index: -1;
+  pointer-events: none;
+}
+.compare-card.tier-premium:hover { transform: scale(1.05) translateY(-6px); }
+.compare-card.tier-premium .compare-card-name {
+  background: linear-gradient(135deg, var(--diamond-pale) 0%, var(--diamond-light) 50%, var(--diamond) 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+}
+.compare-card.tier-premium .compare-price {
+  background: linear-gradient(135deg, var(--diamond-pale) 0%, var(--diamond-light) 40%, var(--diamond) 100%);
+  -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 10px rgba(0,212,255,0.3));
+}
+.compare-card.tier-premium .compare-icon-badge {
+  background: rgba(0,212,255,0.10);
+  color: var(--diamond-light);
+  border: 1px solid rgba(0,212,255,0.4);
+  box-shadow: 0 0 14px rgba(0,212,255,0.18);
+}
+
+/* ---- Diamond corner accent (Premium only) ---- */
+.compare-diamond-mark {
+  position: absolute;
+  top: 14px; left: 14px;
+  width: 16px; height: 16px;
+  z-index: 2;
+}
+.compare-diamond-mark svg { width: 100%; height: 100%; animation: compareDiamondSpin 9s linear infinite; }
+
+/* ---- Header row: icon badge + name + tagline ---- */
+.compare-card-head { display: flex; align-items: center; gap: 10px; margin-bottom: 16px; }
+.compare-icon-badge {
+  width: 34px; height: 34px;
+  border-radius: 10px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px;
+  flex-shrink: 0;
+}
+.compare-card-name { font-size: 15px; font-weight: 800; color: var(--text); }
+.compare-card-tag { font-size: 10.5px; color: var(--text-sec); margin-top: 1px; }
+
+/* ---- Price block ---- */
+.compare-price-block { margin-bottom: 16px; }
+.compare-price {
+  font-family: 'Tajawal', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: var(--text);
+  unicode-bidi: isolate;
+  line-height: 1.1;
+}
+.compare-monthly { font-size: 11px; color: var(--text-sec); margin-top: 3px; unicode-bidi: isolate; }
+
+.compare-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin-bottom: 14px; }
+
+/* ---- Feature rows ---- */
+.compare-rows { flex: 1; }
+.compare-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  font-size: 12.5px;
+  color: var(--text-sec);
+  padding: 8px 0;
+  border-bottom: 1px solid #1a1a1a;
+}
+.compare-row:last-child { border-bottom: none; }
+.compare-row .feat-name { display: flex; align-items: center; gap: 6px; }
+.cv { font-weight: 700; font-size: 12.5px; white-space: nowrap; }
+.cv.yes { color: var(--green); }
+.cv.no  { color: var(--text-dim); }
+.cv.gold { color: var(--gold-light); }
+.cv.gray { color: var(--text-sec); font-weight: 600; }
+.cv.gold-text { color: var(--gold); font-weight: 700; }
+.cv.diamond { color: var(--diamond-light); font-weight: 800; }
+.cv.diamond-yes { color: var(--diamond); }
+
+/* ---- CTA chip pinned to bottom of each card ---- */
+.compare-cta {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 11.5px;
+  font-weight: 700;
+  padding: 9px 0;
+  border-radius: 10px;
+  letter-spacing: 0.3px;
+}
+.compare-card.tier-starter .compare-cta { background: rgba(255,255,255,0.05); color: var(--text-sec); border: 1px solid rgba(255,255,255,0.1); }
+.compare-card.tier-pro .compare-cta { background: linear-gradient(90deg, var(--gold-dim), var(--gold)); color: #1a1206; }
+.compare-card.tier-premium .compare-cta { background: linear-gradient(90deg, var(--diamond-mid), var(--diamond)); color: #03161c; box-shadow: 0 4px 16px rgba(0,212,255,0.3); }
+
+@media (max-width: 768px) {
+  .compare-card.tier-pro, .compare-card.tier-premium { transform: none; }
+  .compare-card.tier-premium:hover { transform: translateY(-6px); }
+}
+
+/* ========== EXPLAIN BOX ========== */
+.monthly-explain {
+  max-width: 700px;
+  margin: 60px auto 0;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+.explain-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-right: 3px solid var(--gold);
+  border-radius: var(--radius-sm);
+  padding: 26px 28px;
+}
+.explain-title { font-size: 13px; font-weight: 600; color: var(--gold); letter-spacing: 1px; margin-bottom: 12px; }
+.explain-text { font-size: 14px; color: var(--text-sec); line-height: 1.85; margin-bottom: 18px; }
+.explain-items { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; }
+.explain-item {
+  background: var(--card);
+  border-radius: var(--radius-xs);
+  padding: 12px 14px;
+  font-size: 13px;
+  color: var(--text-sec);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.explain-item::before { content: '→'; color: var(--gold); font-size: 12px; }
+
+/* ========== PROS/CONS ========== */
+.pros-cons-box {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-right: 3px solid var(--gold);
+  border-radius: var(--radius-sm);
+  padding: 24px 28px;
+}
+.pros-cons-title { font-size: 13px; font-weight: 600; color: var(--gold); letter-spacing: 1px; margin-bottom: 18px; }
+.pc-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 13px;
+  line-height: 1.5;
+  padding: 8px 12px;
+  border-radius: var(--radius-xs);
+  margin-bottom: 6px;
+}
+.pc-pro { background: #0d1f15; color: var(--text); }
+.pc-icon { color: var(--green); font-weight: 700; flex-shrink: 0; }
+
+/* ========== CTA BAND ========== */
+.cta-band {
+  max-width: 700px;
+  margin: 50px auto 0;
+  padding: 0 20px;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+.cta-band-text { font-size: 14px; color: var(--text-sec); margin-bottom: 16px; }
+.cta-band-btns { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+.cta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 11px 22px;
+  border-radius: 100px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  color: var(--gold-light);
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.25s;
+}
+.cta-chip:hover {
+  border-color: var(--gold-dim);
+  background: #1c1810;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 20px rgba(201,147,58,0.15);
+}
+
+/* ========== FOOTER ========== */
+.site-footer {
+  max-width: 900px;
+  margin: 70px auto 0;
+  padding: 36px 24px 0;
+  border-top: 1px solid var(--border);
+  position: relative;
+  z-index: 1;
+}
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 28px;
+  margin-bottom: 28px;
+}
+.footer-brand { font-size: 16px; font-weight: 800; color: var(--gold-light); margin-bottom: 4px; }
+.footer-brand-suffix { color: var(--gold-light); font-weight: 600; }
+.footer-tagline { font-size: 12.5px; color: var(--text-sec); line-height: 1.6; }
+.footer-col-title { font-size: 11px; letter-spacing: 1px; color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px; }
+.footer-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  color: var(--text-sec);
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: color 0.2s;
+}
+.footer-link:hover { color: var(--gold-light); }
+.wa-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  background: #1f4a35;
+  color: var(--green);
+  flex-shrink: 0;
+  transition: all 0.2s;
+}
+.footer-link:hover .wa-icon { background: #25d366; color: #fff; }
+.footer-bottom {
+  text-align: center;
+  padding: 20px 0;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--text-dim);
+}
+
+/* ========== SCROLL REVEAL ========== */
+.reveal {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.reveal-scale {
+  opacity: 0;
+  transform: scale(0.94);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+}
+.reveal-scale.visible {
+  opacity: 1;
+  transform: scale(1);
+}
+
+/* ========== RESPONSIVE ========== */
+@media (max-width: 768px) {
+  .features-grid { grid-template-columns: 1fr; }
+  .portfolio-grid { grid-template-columns: 1fr; }
+  .value-grid { grid-template-columns: 1fr 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .packages-grid {
+    grid-template-columns: 1fr;
+    align-items: stretch;
+  }
+  .pkg-pro, .pkg-starter, .pkg-premium {
+    min-height: auto !important;
+    transform: none !important;
+  }
+  .pkg-pro { animation: none; }
+  .pkg-pro:hover { transform: translateY(-5px) !important; }
+  .hero { padding: 60px 20px 48px; }
+  .hero-actions { flex-direction: column; align-items: stretch; }
+  .hero-btn { justify-content: center; }
+  .footer-grid { grid-template-columns: 1fr; text-align: center; }
+  .footer-link { justify-content: center; }
+}
+@media (max-width: 480px) {
+  .value-grid { grid-template-columns: 1fr; }
+}
+
+/* ========== TESTIMONIALS ========== */
+.testimonials-section {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+.testi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  align-items: start;
+}
+.testi-card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 28px 24px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.35s ease;
+}
+.testi-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 0%, rgba(201,147,58,0.04), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  pointer-events: none;
+}
+.testi-card:hover { border-color: var(--gold-dim); transform: translateY(-5px); }
+.testi-card:hover::before { opacity: 1; }
+
+.testi-card-featured {
+  border-color: var(--gold-dim);
+  background: #0e0c08;
+  box-shadow: 0 0 0 1px rgba(201,147,58,0.1), 0 20px 40px -16px rgba(0,0,0,0.5);
+}
+.testi-card-featured::after {
+  content: 'الأكثر تأثيراً';
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--gold-bright);
+  background: rgba(201,147,58,0.1);
+  border: 1px solid var(--gold-dim);
+  border-radius: 100px;
+  padding: 3px 10px;
+}
+
+.testi-quote-icon {
+  font-family: 'Tajawal', serif;
+  font-size: 52px;
+  line-height: 0.6;
+  color: var(--gold-dim);
+  opacity: 0.6;
+  user-select: none;
+}
+.testi-card-featured .testi-quote-icon { color: var(--gold); opacity: 0.8; }
+
+.testi-text {
+  font-size: 13.5px;
+  color: var(--text-sec);
+  line-height: 1.85;
+  flex: 1;
+}
+.testi-card-featured .testi-text { color: var(--text); }
+
+.testi-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 16px;
+}
+.testi-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--gold-dim), #1a1208);
+  border: 1px solid var(--gold-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-light);
+  flex-shrink: 0;
+}
+.testi-name {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text);
+  margin-bottom: 2px;
+}
+.testi-role {
+  font-size: 11px;
+  color: var(--text-dim);
+  line-height: 1.4;
+}
+.testi-stars {
+  margin-right: auto;
+  font-size: 11px;
+  color: var(--gold);
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+@media (max-width: 768px) {
+  .testi-grid { grid-template-columns: 1fr; }
+  .testi-card-featured::after { display: none; }
+}
+
+
+/* ========== FAQ ========== */
+.faq-section {
+  max-width: 720px;
+  margin: 70px auto 0;
+  padding: 0 24px;
+  position: relative;
+  z-index: 1;
+}
+.faq-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.faq-item {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  transition: border-color 0.3s ease;
+}
+.faq-item.faq-open {
+  border-color: var(--gold-dim);
+}
+.faq-q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px 22px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: 'Cairo', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--text);
+  text-align: right;
+  line-height: 1.5;
+  transition: color 0.25s ease;
+}
+.faq-q:hover { color: var(--gold-light); }
+.faq-item.faq-open .faq-q { color: var(--gold-light); }
+.faq-icon {
+  flex-shrink: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 400;
+  color: var(--text-dim);
+  transition: all 0.3s ease;
+  line-height: 1;
+}
+.faq-item.faq-open .faq-icon {
+  background: rgba(201,147,58,0.1);
+  border-color: var(--gold-dim);
+  color: var(--gold-light);
+  transform: rotate(45deg);
+}
+.faq-a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+.faq-item.faq-open .faq-a {
+  max-height: 300px;
+}
+.faq-a p {
+  padding: 16px 22px 20px;
+  font-size: 13.5px;
+  color: var(--text-sec);
+  line-height: 1.85;
+  border-top: 1px solid var(--border-subtle);
+  margin: 0;
+}
+
+.tilt-card {
+  transform-style: preserve-3d;
+  transition: transform 0.15s ease;
+}
+</style>
+</head>
+<body>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-progress"></div>
+
+<!-- ANIMATED BG -->
+<div class="bg-canvas" aria-hidden="true">
+  <div class="bg-dots"></div>
+  <div class="bg-orb bg-orb-1"></div>
+  <div class="bg-orb bg-orb-2"></div>
+</div>
+
+<!-- ========== HERO ========== -->
+<div class="hero">
+  <div class="hero-line-top"></div>
+  <div class="hero-glow"></div>
+  <div class="hero-eyebrow">متخصصون في مواقع الكافيهات المصرية</div>
+  <h1 class="hero-title">
+    عملاؤك بيدوروا عليك<br>
+    <span class="accent">هل بيلاقوك؟</span>
+  </h1>
+  <p class="hero-sub">لما حد يسأل "إيه منيو الكافيه ده؟" أو "فين بالظبط؟" — الموقع بيرد عنك على طول. بدون ما تتكلم، وبدون ما تفوّت عميل.</p>
+  <div class="hero-actions">
+    <a class="hero-btn hero-btn-primary" href="#packages">اشوف الباقات والأسعار</a>
+    <a class="hero-btn hero-btn-secondary" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أعرف%20تفاصيل%20أكتر%20عن%20باقات%20المواقع" target="_blank">💬 اسألنا على واتساب</a>
+  </div>
+</div>
+
+<!-- ========== FEATURES SECTION ========== -->
+<div class="features-section" id="features">
+  <div class="section-label reveal">ماذا ستحصل</div>
+  <div class="section-title reveal">ماذا ستحصل عند طلب <span class="gold">موقع لكافيهك؟</span></div>
+  <p class="section-sub reveal">كل موقع بنعمله بيجي بمميزات أساسية بتفرق فعلاً في تجربة العميل</p>
+  <div class="features-grid">
+    <div class="feat-card reveal tilt-card" style="transition-delay: 0.05s;">
+      <span class="feat-card-icon">📱</span>
+      <div class="feat-card-title">متوافق مع جميع الهواتف</div>
+      <p class="feat-card-text">يظهر الموقع بشكل مثالي على الموبايل والتابلت والكمبيوتر ليحصل العميل على أفضل تجربة تصفح.</p>
+    </div>
+    <div class="feat-card reveal tilt-card" style="transition-delay: 0.15s;">
+      <span class="feat-card-icon">⚡</span>
+      <div class="feat-card-title">سرعة تحميل عالية</div>
+      <p class="feat-card-text">موقع سريع وخفيف يساعد العميل على الوصول للمنيو والمعلومات خلال ثوانٍ بدون انتظار.</p>
+    </div>
+    <div class="feat-card reveal tilt-card" style="transition-delay: 0.25s;">
+      <span class="feat-card-icon">📍</span>
+      <div class="feat-card-title">ربط مباشر مع Google Maps و WhatsApp</div>
+      <p class="feat-card-text">العميل يقدر يفتح الموقع ويصل للكافيه أو يتواصل معك بضغطة واحدة فقط.</p>
+    </div>
+  </div>
+</div>
+
+<!-- PROS/CONS -->
+<div class="monthly-explain" style="margin-top: 60px;">
+  <div class="pros-cons-box reveal">
+    <div class="pros-cons-title">ليه كافيهك محتاج موقع؟</div>
+    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>عملاء جدد بدون إعلانات</div>
+    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>منيو دايماً محدّث في إيد العميل</div>
+    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>مظهر احترافي يفرق عن المنافسين</div>
+    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>رابط واحد في البايو بيغني عن كل الأسئلة — حطه في السوشيال ميديا وخلي الموقع يتكلم عنك</div>
+    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>بيبنيلك صورة احترافية وبيميزك عن باقي الكافيهات</div>
+  </div>
+</div>
+
+<!-- AVAILABILITY BADGE -->
+<div class="availability-bar">
+  <div class="availability-inner reveal">
+    <span class="availability-dot"></span>
+    <span class="availability-text">الأماكن المتاحة محدودة هذا الشهر</span>
+    <span class="availability-sep">·</span>
+    <span class="availability-sub">يُنصح بالحجز المبكر</span>
+  </div>
+</div>
+
+<!-- ========== PACKAGES ========== -->
+<div class="packages-section" style="margin-top: 60px;" id="packages">
+  <div class="section-label reveal">اختار الباقة المناسبة</div>
+  <div class="section-title reveal">باقاتنا <span class="gold">الاحترافية</span></div>
+  <p class="section-sub reveal">سعر واحد بلا مفاجآت — الموقع يشتغل من أول يوم</p>
+
+  <div class="packages-grid">
+
+    <!-- STARTER -->
+    <div class="pkg pkg-starter reveal-scale tilt-card" style="transition-delay: 0.05s;">
+      <span class="pkg-badge badge-gray">ستارتر</span>
+      <div class="pkg-name">صفحة تعريفية</div>
+      <p class="pkg-desc">للكافيهات اللي عايزة حضور بسيط على النت بأقل تكلفة</p>
+      <div class="pkg-pricing">
+        <div class="price-setup">
+          <span class="price-num">999</span>
+          <span class="price-unit">جنيه</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">مرة واحدة فقط</div>
+        <div class="price-monthly free">
+          <strong>مجاني تماماً</strong><span>بدون رسوم شهرية</span>
+        </div>
+        <div class="delivery-tag">⏱ التسليم: <span>من يوم لغاية يومين</span></div>
+      </div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-features">
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>منيو كامل للكافيه</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>زرار واتساب مباشر</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>موقعك على الخريطة</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>ساعات العمل والتليفون</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>ديزاين بسيط ونظيف</div>
+        <div class="feat no-feat"><span class="feat-icon no">✗</span>دومين خاص (.com)</div>
+        <div class="feat no-feat"><span class="feat-icon no">✗</span>تقييمات العملاء</div>
+        <div class="feat no-feat"><span class="feat-icon no">✗</span>تعديلات بعد التسليم</div>
+      </div>
+      <div class="pkg-cta">
+        <a class="btn-main btn-link" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أبدأ%20بباقة%20الستارتر%20(999%20جنيه)%20لكافيهي%2C%20جاهز%20نتكلم%20في%20التفاصيل" target="_blank">ابدأ بالستارتر</a>
+      </div>
+    </div>
+
+    <!-- PRO - FEATURED -->
+    <div class="pkg pkg-pro reveal-scale tilt-card" style="transition-delay: 0.15s;">
+      <div class="pro-corner-glow"></div>
+      <span class="pkg-badge badge-gold">🔥 الأكثر اختياراً بين أصحاب الكافيهات</span>
+      <div class="pkg-name">موقع احترافي</div>
+      <p class="pkg-desc">للكافيهات اللي عندها اسم وعايزة تبان احترافية أمام عملائها</p>
+      <div class="pkg-pricing">
+        <div class="price-setup">
+          <span class="price-num">2499</span>
+          <span class="price-unit">جنيه</span>
+        </div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">مرة واحدة فقط</div>
+        <div class="price-monthly">
+          <strong>+ 150 جنيه / شهر</strong>
+        </div>
+        <div class="delivery-tag">⏱ التسليم: <span>من 3 لغاية 5 أيام</span></div>
+      </div>
+      <div class="pkg-divider"></div>
+      <div class="pkg-features">
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>كل حاجة في الستارتر</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>دومين خاص (.com أو .shop)</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>تقييمات العملاء</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>صور احترافية للمكان</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>ديزاين احترافي مميز</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>تعديل المنيو كل شهر</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>هوست ودومين مدفوعين</div>
+      </div>
+      <div class="pkg-cta">
+        <a class="btn-gold-pro btn-link btn-main" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أبدأ%20بباقة%20الاحترافي%20(2499%20جنيه%20%2B%20150%20جنيه%2Fشهر)%20لكافيهي%2C%20جاهز%20نتكلم%20في%20التفاصيل" target="_blank">احصل على موقعك الآن 🚀</a>
+      </div>
+    </div>
+
+    <!-- PREMIUM — DIAMOND ELITE -->
+    <div class="pkg pkg-premium reveal-scale" style="transition-delay: 0.25s; position: relative;">
+
+      <!-- Ambient glow behind the card -->
+      <div class="pkg-premium-ambient"></div>
+
+      <!-- Glowing border shine sweep -->
+      <div class="pkg-premium-shine"></div>
+
+      <!-- Sparkling particles -->
+      <div class="pkg-premium-sparks">
+        <span class="spark"></span>
+        <span class="spark"></span>
+        <span class="spark"></span>
+        <span class="spark"></span>
+        <span class="spark"></span>
+        <span class="spark"></span>
+      </div>
+
+      <!-- TOP TIER ribbon -->
+      <div class="pkg-premium-ribbon">TOP TIER</div>
+
+      <!-- Badge -->
+      <span class="pkg-badge badge-platinum">💎 DIAMOND ELITE</span>
+
+      <div class="pkg-name" style="font-size:22px; color: var(--diamond-pale);">حضور كامل</div>
+      <p class="pkg-desc" style="color: rgba(139,233,255,0.55);">للكافيهات الكبيرة أو اللي عندها أكتر من فرع وعايزة تبان مختلفة عن أي حد تاني</p>
+
+      <div class="pkg-pricing">
+        <div class="price-setup">
+          <span class="price-num">4999</span>
+          <span class="price-unit">جنيه</span>
+        </div>
+        <div style="font-size:11px;color:rgba(0,212,255,0.45);margin-bottom:10px;">مرة واحدة فقط</div>
+        <div class="price-monthly">
+          <strong>+ 250 جنيه / شهر</strong>
+        </div>
+        <div class="delivery-tag">⏱ التسليم: <span>من 5 لغاية 7 أيام</span></div>
+      </div>
+
+      <div class="pkg-divider"></div>
+
+      <div class="pkg-features">
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>كل حاجة في الاحترافي</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>تعديلات شهرية <strong style="color:var(--diamond-light)">موسّعة</strong> — منيو، أسعار</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>دارك مود ولايت مود — العميل يختار اللي يريحه</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>زرار "شارك المنيو" — العميل يبعت الموقع لصحابه على واتساب بضغطة</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>شريط إنستجرام حي — بيعرض متابعينك وبيبني ثقة من أول نظرة</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>دعم واتساب أولوية — ردود خلال 24 ساعة طول الأسبوع</div>
+      </div>
+
+      <div class="pkg-cta">
+        <a class="btn-main btn-link btn-premium" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أبدأ%20بباقة%20البريميوم%20(4999%20جنيه%20%2B%20250%20جنيه%2Fشهر)%20لكافيهي%2C%20جاهز%20نتكلم%20في%20التفاصيل" target="_blank">💎 احصل على Diamond Elite</a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<div class="cta-band" style="margin-top: 50px;">
+  <p class="cta-band-text">محتار أي باقة تناسبك؟ احجز استشارة مجانية وهنساعدك تختار</p>
+  <div class="cta-band-btns">
+    <a class="cta-chip" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أحجز%20استشارة%20مجانية%20لمعرفة%20الباقة%20المناسبة%20لكافيهي" target="_blank">📅 احجز استشارة مجانية</a>
+    <a class="cta-chip" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أطلب%20موقعي%20لكافيهي" target="_blank">🚀 اطلب موقعك</a>
+  </div>
+</div>
+
+<!-- ========== COMPARISON ========== -->
+<div class="compare-section">
+  <div class="section-label reveal">مقارنة سريعة</div>
+  <div class="section-title reveal">إيه الفرق <span class="gold">الحقيقي</span> بين الباقات؟</div>
+  <p class="section-sub reveal">كل باقة مبنية لمرحلة مختلفة من نمو الكافيه — اختار اللي يناسب احتياجك دلوقتي</p>
+  <div class="compare-grid">
+
+    <div class="compare-card tier-starter reveal" style="transition-delay:0.05s;">
+      <div class="compare-card-head">
+        <div class="compare-icon-badge">☕</div>
+        <div>
+          <div class="compare-card-name">ستارتر</div>
+          <div class="compare-card-tag">بداية سريعة وبسيطة</div>
+        </div>
+      </div>
+      <div class="compare-price-block">
+        <div class="compare-price" style="unicode-bidi:isolate;">999 جم</div>
+        <div class="compare-monthly">بدون رسوم شهرية</div>
+      </div>
+      <div class="compare-divider"></div>
+      <div class="compare-rows">
+        <div class="compare-row"><span class="feat-name">عدد الصفحات</span><span class="cv gray">صفحة واحدة</span></div>
+        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv no">✗</span></div>
+        <div class="compare-row"><span class="feat-name">ربط واتساب مباشر</span><span class="cv yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv no">✗</span></div>
+        <div class="compare-row"><span class="feat-name">توافق كامل مع الجوال</span><span class="cv yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">تحسين الظهور في جوجل</span><span class="cv no">✗</span></div>
+        <div class="compare-row"><span class="feat-name">استضافة ودومين</span><span class="cv no">غير مشمول</span></div>
+        <div class="compare-row"><span class="feat-name">تعديلات بعد التسليم</span><span class="cv no">✗</span></div>
+        <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv gray">أساسي</span></div>
+        <div class="compare-row"><span class="feat-name">وقت التنفيذ</span><span class="cv gray">1-2 يوم</span></div>
+      </div>
+      <div class="compare-cta">يناسب البداية السريعة</div>
+    </div>
+
+    <div class="compare-card tier-pro hot reveal" style="transition-delay:0.15s;">
+      <div class="compare-card-head">
+        <div class="compare-icon-badge">✦</div>
+        <div>
+          <div class="compare-card-name">احترافي</div>
+          <div class="compare-card-tag">الأكثر طلباً من أصحاب الكافيهات</div>
+        </div>
+      </div>
+      <div class="compare-price-block">
+        <div class="compare-price" style="unicode-bidi:isolate;">2499 جم</div>
+        <div class="compare-monthly" style="unicode-bidi:isolate;">+ 150 جم / شهر</div>
+      </div>
+      <div class="compare-divider"></div>
+      <div class="compare-rows">
+        <div class="compare-row"><span class="feat-name">عدد الصفحات</span><span class="cv gold">حتى 4 صفحات</span></div>
+        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">ربط واتساب مباشر</span><span class="cv yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">توافق كامل مع الجوال</span><span class="cv yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">تحسين الظهور في جوجل</span><span class="cv gold-text">أساسي</span></div>
+        <div class="compare-row"><span class="feat-name">استضافة ودومين</span><span class="cv yes">✓ مشمول</span></div>
+        <div class="compare-row"><span class="feat-name">تعديلات بعد التسليم</span><span class="cv gold">تعديل شهري</span></div>
+        <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv gold-text">سريع عبر واتساب</span></div>
+        <div class="compare-row"><span class="feat-name">وقت التنفيذ</span><span class="cv gold">3-5 أيام</span></div>
+      </div>
+      <div class="compare-cta">الأكثر توازناً للكافيهات</div>
+    </div>
+
+    <div class="compare-card tier-premium reveal" style="transition-delay:0.25s;">
+      <div class="compare-diamond-mark">
+        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M12 1L23 9L12 23L1 9L12 1Z" fill="var(--diamond)" opacity="0.85"/>
+          <path d="M12 1L17.5 9L12 23L6.5 9L12 1Z" fill="var(--diamond-light)" opacity="0.6"/>
+        </svg>
+      </div>
+      <div class="compare-card-head">
+        <div class="compare-icon-badge">💎</div>
+        <div>
+          <div class="compare-card-name">بريميوم</div>
+          <div class="compare-card-tag">أقصى نمو وحضور رقمي كامل</div>
+        </div>
+      </div>
+      <div class="compare-price-block">
+        <div class="compare-price" style="unicode-bidi:isolate;">4999 جم</div>
+        <div class="compare-monthly" style="unicode-bidi:isolate;">+ 250 جم / شهر</div>
+      </div>
+      <div class="compare-divider"></div>
+      <div class="compare-rows">
+        <div class="compare-row"><span class="feat-name">عدد الصفحات</span><span class="cv diamond">صفحات غير محدودة</span></div>
+        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv diamond">حصري + أنيميشنز</span></div>
+        <div class="compare-row"><span class="feat-name">ربط واتساب مباشر</span><span class="cv diamond-yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv diamond-yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">توافق كامل مع الجوال</span><span class="cv diamond-yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">تحسين الظهور في جوجل</span><span class="cv diamond">متقدم + Google Business</span></div>
+        <div class="compare-row"><span class="feat-name">استضافة ودومين</span><span class="cv diamond-yes">✓ مشمول بالكامل</span></div>
+        <div class="compare-row"><span class="feat-name">تعديلات بعد التسليم</span><span class="cv diamond">تعديلات موسّعة شهرياً</span></div>
+        <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv diamond">أولوية فورية</span></div>
+        <div class="compare-row"><span class="feat-name">أولوية في التنفيذ</span><span class="cv diamond-yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">وقت التنفيذ</span><span class="cv diamond">5-7 أيام</span></div>
+      </div>
+      <div class="compare-cta">أعلى قيمة لنمو طويل المدى</div>
+    </div>
+
+  </div>
+</div>
+
+<!-- EXPLAIN BOX -->
+<div class="monthly-explain" style="margin-top: 60px;">
+  <div class="explain-box reveal">
+    <div class="explain-title">إيه معنى الرسوم الشهرية؟</div>
+    <p class="explain-text">
+      لما بتدفع مرة واحدة بس، الموقع بيتعمل وخلاص — لكن الدومين (اسم الموقع) والهوست (المكان اللي الموقع شغال عليه) ليهم تكلفة متكررة كل شهر. الرسوم الشهرية بتغطي الاتنين دول، وكمان لو عايز تغير أي حاجة في الموقع زي الأسعار أو المنيو، بيتعمل على طول من غير ما تدفع حاجة زيادة.
+    </p>
+    <div class="explain-items">
+      <div class="explain-item">تجديد الدومين سنوياً</div>
+      <div class="explain-item">الهوست شغال دايماً</div>
+      <div class="explain-item">تغيير أسعار المنيو</div>
+      <div class="explain-item">دعم فني سريع</div>
+    </div>
+  </div>
+</div>
+
+<!-- VALUE ADDS -->
+<div class="value-section" style="margin-top: 70px;">
+  <div class="section-label reveal">إيه اللي بيفرق فعلاً</div>
+  <div class="section-title reveal">غير المنيو، <span class="gold">إيه اللي بتحصل عليه؟</span></div>
+  <p class="section-sub reveal">كل موقع بيجي بمجموعة مميزات بتخلي العميل يتواصل معاك بسهولة</p>
+  <div class="value-grid">
+    <div class="value-card reveal tilt-card" style="transition-delay:0.05s;">
+      <div class="value-icon-badge">📍</div>
+      <div class="value-card-title">الموقع على الخريطة</div>
+      <div class="value-card-text">العميل بيسكان الـ QR وعايز يعرف إنتوا فين بالظبط — ربط Google Maps مباشرة بيخلي مفيش حجة "مش لاقينكم"</div>
+    </div>
+    <div class="value-card reveal tilt-card" style="transition-delay:0.1s;">
+      <div class="value-icon-badge">⭐</div>
+      <div class="value-card-title">تقييمات العملاء</div>
+      <div class="value-card-text">بيبني ثقة مع الناس اللي شايفين الموقع لأول مرة — سواء تقييمات Google أو فورم صغير جوه الموقع</div>
+    </div>
+    <div class="value-card reveal tilt-card" style="transition-delay:0.15s;">
+      <div class="value-icon-badge">💬</div>
+      <div class="value-card-title">زرار واتساب مباشر</div>
+      <div class="value-card-text">بدل ما العميل يدور على رقمك، زرار واحد بيفتحله واتساب مع رسالة جاهزة — "أهلاً، عايز أحجز طاولة"</div>
+    </div>
+    <div class="value-card reveal tilt-card" style="transition-delay:0.2s;">
+      <div class="value-icon-badge">🕐</div>
+      <div class="value-card-title">ساعات العمل</div>
+      <div class="value-card-text">العميل معرفش هل الكافيه فاتح ولا لأ — ساعات العمل الواضحة بتوفر عليه سؤال وعليك رد</div>
+    </div>
+    <div class="value-card reveal tilt-card" style="transition-delay:0.25s;">
+      <div class="value-icon-badge">📸</div>
+      <div class="value-card-title">صور المكان</div>
+      <div class="value-card-text">صور جميلة للمكان بتحسس العميل إنه عايز يجي — قبل ما يدخل باب الكافيه خالص</div>
+    </div>
+    <div class="value-card reveal tilt-card" style="transition-delay:0.3s;">
+      <div class="value-icon-badge">📱</div>
+      <div class="value-card-title">تليفون قابل للضغط</div>
+      <div class="value-card-text">رقم "اتصل بنا" قابل للضغط على المحمول بيفرق جداً — ما محدش بيكتب أرقام باليد في 2026</div>
+    </div>
+  </div>
+</div>
+
+<div class="cta-band" style="margin-top: 60px;">
+  <p class="cta-band-text">جاهز تبدأ؟ كلمنا دلوقتي وهنرد عليك بأسرع وقت</p>
+  <div class="cta-band-btns">
+    <a class="cta-chip" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أطلب%20موقعي%20لكافيهي" target="_blank">💬 تواصل الآن</a>
+  </div>
+</div>
+
+<!-- ========== FAQ ========== -->
+<div class="faq-section">
+  <div class="section-label reveal">الأسئلة الشائعة</div>
+  <div class="section-title reveal"><span class="gold">الأسئلة الشائعة</span></div>
+  <p class="section-sub reveal">إجابات على أكتر الأسئلة اللي بتيجي من أصحاب الكافيهات قبل ما يبدأوا</p>
+
+  <div class="faq-list">
+
+    <div class="faq-item reveal" style="transition-delay:0.05s;">
+      <button class="faq-q">
+        <span>كم يستغرق تنفيذ الموقع؟</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>يتوقف على الباقة المختارة. باقة ستارتر تُسلَّم خلال يوم إلى يومين، الاحترافي من 3 إلى 5 أيام، والبريميوم من 5 إلى 7 أيام عمل. نبدأ بمجرد استلام المحتوى منك.</p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal" style="transition-delay:0.1s;">
+      <button class="faq-q">
+        <span>هل يمكنني تعديل المنيو لاحقاً؟</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>نعم. باقة الاحترافي تشمل تعديلاً شهرياً واحداً، وباقة البريميوم تشمل عدداً أكبر من التعديلات الشهرية حسب الباقة. كل ما عليك فعله هو إرسال التعديلات على الواتساب وسنُنفّذها في أقرب وقت.</p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal" style="transition-delay:0.15s;">
+      <button class="faq-q">
+        <span>هل توجد رسوم شهرية؟</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>باقة ستارتر لا تشمل أي رسوم شهرية. أما باقتا الاحترافي والبريميوم فتشملان رسوماً شهرية تغطي الدومين والاستضافة والتعديلات الدورية. السعر ثابت ومُعلَن مسبقاً بلا مفاجآت.</p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal" style="transition-delay:0.2s;">
+      <button class="faq-q">
+        <span>هل الدومين والاستضافة مشمولان؟</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>نعم، في باقتي الاحترافي والبريميوم الدومين الخاص (.com أو .shop) والاستضافة مشمولان ضمن الرسوم الشهرية. لن تحتاج إلى التعامل مع أي جهة خارجية أو دفع أي رسوم إضافية.</p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal" style="transition-delay:0.25s;">
+      <button class="faq-q">
+        <span>إزاي بتواصل معايا لو احتجت دعم فني؟</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>التواصل بيكون مباشر عن طريق الواتساب. باقة ستارتر بتاخد دعم أساسي للأسئلة العامة، وباقتا الاحترافي والبريميوم بتاخدوا أولوية في الرد ضمن وقت العمل.</p>
+      </div>
+    </div>
+
+    <div class="faq-item reveal" style="transition-delay:0.3s;">
+      <button class="faq-q">
+        <span>ماذا يحدث بعد انتهاء الاشتراك؟</span>
+        <span class="faq-icon">+</span>
+      </button>
+      <div class="faq-a">
+        <p>إذا قررت إيقاف الاشتراك، يتوقف الموقع عن العمل مع انتهاء دورة الدفع الحالية. يمكنك استئناف الخدمة في أي وقت بنفس الإعدادات. لا يوجد عقد ملزم ولا رسوم إلغاء.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand">Omar Osama <span class="footer-brand-suffix">Web Solutions</span></div>
+      <div class="footer-brand">Mohammed Amged <span class="footer-brand-suffix">Web Solutions</span></div>
+      <p class="footer-tagline">متخصصون في تصميم مواقع احترافية للكافيهات في جميع أنحاء مصر.</p>
+    </div>
+    <div>
+      <div class="footer-col-title">تواصل معنا</div>
+      <a class="footer-link" href="https://wa.me/201229534310" target="_blank">
+        <span class="wa-icon">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 1.78.47 3.45 1.28 4.9L2 22l5.31-1.39a9.87 9.87 0 0 0 4.73 1.2h.01c5.46 0 9.91-4.45 9.91-9.91A9.86 9.86 0 0 0 12.04 2zm5.78 14.13c-.24.68-1.4 1.3-1.93 1.38-.5.08-1.12.11-1.81-.11-.42-.13-.95-.31-1.64-.6-2.88-1.24-4.75-4.14-4.89-4.34-.14-.2-1.17-1.56-1.17-2.97s.74-2.1 1-2.39c.26-.29.57-.36.76-.36.19 0 .38 0 .55.01.18.01.42-.07.65.5.24.58.81 1.99.88 2.13.07.14.12.31.02.49-.1.18-.15.29-.29.45-.14.16-.29.36-.42.48-.14.13-.28.27-.12.55.16.28.71 1.18 1.53 1.91 1.05.94 1.94 1.23 2.22 1.37.28.14.45.12.62-.07.17-.19.71-.83.9-1.11.19-.28.38-.23.63-.14.26.1 1.64.78 1.92.92.28.14.47.21.54.33.07.12.07.7-.17 1.38z"/></svg>
+        </span>
+        واتساب: 01229534310
+      </a>
+    </div>
+  </div>
+  <div class="footer-bottom">© 2026 Omar Osama Web Solutions — جميع الحقوق محفوظة</div>
+</footer>
+
+<script>
+// ========== SCROLL PROGRESS ==========
+const progressBar = document.getElementById('scroll-progress');
+window.addEventListener('scroll', () => {
+  const scrollTop = document.documentElement.scrollTop;
+  const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+  progressBar.style.width = (scrollTop / scrollHeight * 100) + '%';
+}, { passive: true });
+
+// ========== SCROLL REVEAL ==========
+const revealObserver = new IntersectionObserver((entries) => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('visible');
+      revealObserver.unobserve(entry.target);
+    }
+  });
+}, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+document.querySelectorAll('.reveal, .reveal-scale').forEach(el => {
+  revealObserver.observe(el);
+});
+
+// ========== TILT EFFECT (desktop only) ==========
+if (window.matchMedia('(min-width: 769px)').matches) {
+  document.querySelectorAll('.tilt-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+      const rect = card.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rotateX = (-y / rect.height * 6).toFixed(2);
+      const rotateY = (x / rect.width * 6).toFixed(2);
+      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(8px)`;
+    });
+    card.addEventListener('mouseleave', () => {
+      card.style.transform = '';
+      setTimeout(() => { card.style.transform = ''; }, 200);
+    });
+  });
+
+  // Pro card has its own scale, adjust tilt
+  const proCard = document.querySelector('.pkg-pro');
+  if (proCard) {
+    proCard.addEventListener('mousemove', (e) => {
+      const rect = proCard.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      const rX = (-y / rect.height * 5).toFixed(2);
+      const rY = (x / rect.width * 5).toFixed(2);
+      proCard.style.transform = `scale(1.04) perspective(1000px) rotateX(${rX}deg) rotateY(${rY}deg) translateZ(10px) translateY(-6px)`;
+    });
+    proCard.addEventListener('mouseleave', () => {
+      proCard.style.transform = 'scale(1.02)';
+    });
+  }
+}
+
+// ========== RIPPLE on PRO BUTTON ==========
+document.querySelectorAll('.btn-gold-pro').forEach(btn => {
+  btn.addEventListener('click', (e) => {
+    const ripple = document.createElement('span');
+    const rect = btn.getBoundingClientRect();
+    const size = Math.max(rect.width, rect.height);
+    ripple.style.cssText = `
+      position:absolute;width:${size}px;height:${size}px;
+      border-radius:50%;background:rgba(255,255,255,0.25);
+      top:${e.clientY - rect.top - size/2}px;
+      left:${e.clientX - rect.left - size/2}px;
+      transform:scale(0);animation:ripple 0.6s linear;
+      pointer-events:none;
+    `;
+    btn.appendChild(ripple);
+    setTimeout(() => ripple.remove(), 600);
+  });
+});
+
+// Add ripple keyframe dynamically
+const style = document.createElement('style');
+style.textContent = '@keyframes ripple { to { transform: scale(4); opacity: 0; } }';
+document.head.appendChild(style);
+
+// ========== LAZY LOADING ==========
+if ('loading' in HTMLImageElement.prototype) {
+  document.querySelectorAll('img').forEach(img => img.setAttribute('loading', 'lazy'));
+}
+
+// ========== REDUCED MOTION ==========
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.documentElement.style.setProperty('--transition', '0.01ms');
+  document.querySelectorAll('.bg-orb, .bg-dots, .urgency-inner').forEach(el => {
+    el.style.animation = 'none';
+  });
+}
+// ========== FAQ ACCORDION ==========
+document.querySelectorAll('.faq-q').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('faq-open');
+    document.querySelectorAll('.faq-item.faq-open').forEach(el => el.classList.remove('faq-open'));
+    if (!isOpen) item.classList.add('faq-open');
+  });
+});
+</script>
+</body>
+</html>
