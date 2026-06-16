@@ -929,6 +929,8 @@ body {
   filter: drop-shadow(0 0 12px rgba(0,212,255,0.3));
 }
 .pkg-premium .price-unit { color: var(--diamond-mid); opacity: 0.8; }
+.pkg-premium .price-old { color: rgba(139,233,255,0.35); }
+.pkg-premium .discount-tag { background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.3); color: var(--diamond-light); }
 .pkg-premium .pkg-pricing {
   background: rgba(0,212,255,0.04);
   border-color: rgba(0,212,255,0.12);
@@ -1093,6 +1095,26 @@ body {
   font-size: 13px;
 }
 .price-monthly.free strong { color: var(--green); }
+.price-old {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-decoration: line-through;
+  unicode-bidi: isolate;
+}
+.discount-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 11px;
+  border-radius: 20px;
+  margin-bottom: 10px;
+}
 .delivery-tag {
   display: inline-flex;
   align-items: center;
@@ -1341,6 +1363,29 @@ body {
   line-height: 1.1;
 }
 .compare-monthly { font-size: 11px; color: var(--text-sec); margin-top: 3px; unicode-bidi: isolate; }
+.compare-price-old {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-dim);
+  text-decoration: line-through;
+  unicode-bidi: isolate;
+  margin-bottom: 2px;
+}
+.compare-discount-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  background: var(--green-bg);
+  border: 1px solid var(--green-border);
+  color: var(--green);
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 20px;
+  margin-bottom: 8px;
+}
+.compare-card.tier-premium .compare-price-old { color: rgba(139,233,255,0.35); }
+.compare-card.tier-premium .compare-discount-tag { background: rgba(0,212,255,0.08); border-color: rgba(0,212,255,0.3); color: var(--diamond-light); }
 
 .compare-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--border), transparent); margin-bottom: 14px; }
 
@@ -1358,7 +1403,7 @@ body {
 }
 .compare-row:last-child { border-bottom: none; }
 .compare-row .feat-name { display: flex; align-items: center; gap: 6px; }
-.cv { font-weight: 700; font-size: 12.5px; white-space: nowrap; }
+.cv { font-weight: 700; font-size: 12.5px; white-space: nowrap; unicode-bidi: isolate; }
 .cv.yes { color: var(--green); }
 .cv.no  { color: var(--text-dim); }
 .cv.gold { color: var(--gold-light); }
@@ -1951,8 +1996,10 @@ body {
       <p class="pkg-desc" style="color: rgba(139,233,255,0.55);">للكافيهات الكبيرة أو اللي عندها أكتر من فرع وعايزة تبان مختلفة عن أي حد تاني</p>
 
       <div class="pkg-pricing">
+        <span class="discount-tag">🔥 خصم لفترة محدودة</span>
         <div class="price-setup">
-          <span class="price-num">4999</span>
+          <span class="price-old">5000</span>
+          <span class="price-num">3500</span>
           <span class="price-unit">جنيه</span>
         </div>
         <div style="font-size:11px;color:rgba(0,212,255,0.45);margin-bottom:10px;">مرة واحدة فقط</div>
@@ -1967,6 +2014,7 @@ body {
       <div class="pkg-features">
         <div class="feat yes-feat"><span class="feat-icon yes">✓</span>كل حاجة في الاحترافي</div>
         <div class="feat yes-feat"><span class="feat-icon yes">✓</span>تعديلات شهرية <strong style="color:var(--diamond-light)">موسّعة</strong> — منيو، أسعار</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>QR Code للموقع — يتحط على الطرابيزة وكل عميل يدخل الموقع بمسحة واحدة</div>
         <div class="feat yes-feat"><span class="feat-icon yes">✓</span>دارك مود ولايت مود — العميل يختار اللي يريحه</div>
         <div class="feat yes-feat"><span class="feat-icon yes">✓</span>زرار "شارك المنيو" — العميل يبعت الموقع لصحابه على واتساب بضغطة</div>
         <div class="feat yes-feat"><span class="feat-icon yes">✓</span>شريط إنستجرام حي — بيعرض متابعينك وبيبني ثقة من أول نظرة</div>
@@ -1974,7 +2022,7 @@ body {
       </div>
 
       <div class="pkg-cta">
-        <a class="btn-main btn-link btn-premium" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أبدأ%20بباقة%20البريميوم%20(4999%20جنيه%20%2B%20250%20جنيه%2Fشهر)%20لكافيهي%2C%20جاهز%20نتكلم%20في%20التفاصيل" target="_blank">💎 احصل على Diamond Elite</a>
+        <a class="btn-main btn-link btn-premium" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أبدأ%20بباقة%20البريميوم%20(3500%20جنيه%20%2B%20250%20جنيه%2Fشهر)%20لكافيهي%2C%20جاهز%20نتكلم%20في%20التفاصيل" target="_blank">💎 احصل على Diamond Elite</a>
       </div>
 
     </div>
@@ -2011,14 +2059,14 @@ body {
       </div>
       <div class="compare-divider"></div>
       <div class="compare-rows">
-        <div class="compare-row"><span class="feat-name">عدد الصفحات</span><span class="cv gray">صفحة واحدة</span></div>
-        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv no">✗</span></div>
         <div class="compare-row"><span class="feat-name">ربط واتساب مباشر</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv no">✗</span></div>
         <div class="compare-row"><span class="feat-name">توافق كامل مع الجوال</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">تحسين الظهور في جوجل</span><span class="cv no">✗</span></div>
+        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv no">✗</span></div>
+        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv no">✗</span></div>
         <div class="compare-row"><span class="feat-name">استضافة ودومين</span><span class="cv no">غير مشمول</span></div>
         <div class="compare-row"><span class="feat-name">تعديلات بعد التسليم</span><span class="cv no">✗</span></div>
+        <div class="compare-row"><span class="feat-name">QR Code للموقع</span><span class="cv no">✗</span></div>
+        <div class="compare-row"><span class="feat-name">أولوية في التنفيذ</span><span class="cv no">✗</span></div>
         <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv gray">أساسي</span></div>
         <div class="compare-row"><span class="feat-name">وقت التنفيذ</span><span class="cv gray">1-2 يوم</span></div>
       </div>
@@ -2039,14 +2087,14 @@ body {
       </div>
       <div class="compare-divider"></div>
       <div class="compare-rows">
-        <div class="compare-row"><span class="feat-name">عدد الصفحات</span><span class="cv gold">حتى 4 صفحات</span></div>
-        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv yes">✓</span></div>
         <div class="compare-row"><span class="feat-name">ربط واتساب مباشر</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv yes">✓</span></div>
         <div class="compare-row"><span class="feat-name">توافق كامل مع الجوال</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">تحسين الظهور في جوجل</span><span class="cv gold-text">أساسي</span></div>
+        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv yes">✓</span></div>
         <div class="compare-row"><span class="feat-name">استضافة ودومين</span><span class="cv yes">✓ مشمول</span></div>
         <div class="compare-row"><span class="feat-name">تعديلات بعد التسليم</span><span class="cv gold">تعديل شهري</span></div>
+        <div class="compare-row"><span class="feat-name">QR Code للموقع</span><span class="cv no">✗</span></div>
+        <div class="compare-row"><span class="feat-name">أولوية في التنفيذ</span><span class="cv no">✗</span></div>
         <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv gold-text">سريع عبر واتساب</span></div>
         <div class="compare-row"><span class="feat-name">وقت التنفيذ</span><span class="cv gold">3-5 أيام</span></div>
       </div>
@@ -2068,21 +2116,22 @@ body {
         </div>
       </div>
       <div class="compare-price-block">
-        <div class="compare-price" style="unicode-bidi:isolate;">4999 جم</div>
+        <span class="compare-discount-tag">🔥 خصم</span>
+        <div class="compare-price-old">5000 جم</div>
+        <div class="compare-price" style="unicode-bidi:isolate;">3500 جم</div>
         <div class="compare-monthly" style="unicode-bidi:isolate;">+ 250 جم / شهر</div>
       </div>
       <div class="compare-divider"></div>
       <div class="compare-rows">
-        <div class="compare-row"><span class="feat-name">عدد الصفحات</span><span class="cv diamond">صفحات غير محدودة</span></div>
-        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv diamond">حصري + أنيميشنز</span></div>
         <div class="compare-row"><span class="feat-name">ربط واتساب مباشر</span><span class="cv diamond-yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv diamond-yes">✓</span></div>
         <div class="compare-row"><span class="feat-name">توافق كامل مع الجوال</span><span class="cv diamond-yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">تحسين الظهور في جوجل</span><span class="cv diamond">متقدم + Google Business</span></div>
+        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv diamond">حصري + أنيميشنز</span></div>
+        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv diamond-yes">✓</span></div>
         <div class="compare-row"><span class="feat-name">استضافة ودومين</span><span class="cv diamond-yes">✓ مشمول بالكامل</span></div>
         <div class="compare-row"><span class="feat-name">تعديلات بعد التسليم</span><span class="cv diamond">تعديلات موسّعة شهرياً</span></div>
-        <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv diamond">أولوية فورية</span></div>
+        <div class="compare-row"><span class="feat-name">QR Code للموقع</span><span class="cv diamond-yes">✓</span></div>
         <div class="compare-row"><span class="feat-name">أولوية في التنفيذ</span><span class="cv diamond-yes">✓</span></div>
+        <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv diamond">أولوية فورية</span></div>
         <div class="compare-row"><span class="feat-name">وقت التنفيذ</span><span class="cv diamond">5-7 أيام</span></div>
       </div>
       <div class="compare-cta">أعلى قيمة لنمو طويل المدى</div>
