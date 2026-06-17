@@ -26,6 +26,9 @@
   --green: #4db87a;
   --green-bg: #0d1f15;
   --green-border: #1a4a2d;
+  --red: #e2685c;
+  --red-bg: #2a1414;
+  --red-border: #4a1f1a;
   --radius: 16px;
   --radius-sm: 10px;
   --radius-xs: 8px;
@@ -65,7 +68,7 @@ body {
   position: absolute;
   border-radius: 50%;
   filter: blur(80px);
-  opacity: 0.06;
+  opacity: 0.04;
   animation: orbDrift 18s ease-in-out infinite alternate;
 }
 .bg-orb-1 {
@@ -79,7 +82,7 @@ body {
   width: 400px; height: 400px;
   background: var(--gold-light);
   bottom: 20%; right: -100px;
-  opacity: 0.04;
+  opacity: 0.025;
   animation-duration: 20s;
   animation-direction: alternate-reverse;
 }
@@ -87,9 +90,9 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle, rgba(201,147,58,0.12) 1px, transparent 1px);
+    radial-gradient(circle, rgba(201,147,58,0.08) 1px, transparent 1px);
   background-size: 40px 40px;
-  opacity: 0.5;
+  opacity: 0.35;
   animation: dotsDrift 40s linear infinite;
 }
 
@@ -151,8 +154,8 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 @keyframes cardGlow {
-  0%, 100% { box-shadow: 0 0 0 1px var(--gold-dim), 0 0 20px var(--gold-glow), 0 20px 40px -10px rgba(0,0,0,0.5); }
-  50% { box-shadow: 0 0 0 1px var(--gold), 0 0 35px var(--gold-glow-strong), 0 20px 40px -10px rgba(0,0,0,0.6); }
+  0%, 100% { box-shadow: 0 0 0 1px var(--gold-dim), 0 0 16px var(--gold-glow), 0 20px 40px -10px rgba(0,0,0,0.5); }
+  50% { box-shadow: 0 0 0 1px var(--gold-dim), 0 0 24px var(--gold-glow), 0 20px 40px -10px rgba(0,0,0,0.6); }
 }
 
 /* ========== HERO ========== */
@@ -178,7 +181,7 @@ body {
   top: -150px; left: 50%;
   transform: translateX(-50%);
   width: 600px; height: 400px;
-  background: radial-gradient(ellipse, rgba(201,147,58,0.12) 0%, transparent 70%);
+  background: radial-gradient(ellipse, rgba(201,147,58,0.07) 0%, transparent 70%);
   pointer-events: none;
 }
 .hero-eyebrow {
@@ -1431,7 +1434,14 @@ body {
   .compare-card.tier-premium:hover { transform: translateY(-6px); }
 }
 
-/* ========== EXPLAIN BOX ========== */
+/* ========== COMPARE SECTION ========== */
+.compare-section {
+  max-width: 1000px;
+  margin: 70px auto 0;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
 .monthly-explain {
   max-width: 700px;
   margin: 60px auto 0;
@@ -1482,6 +1492,41 @@ body {
 }
 .pc-pro { background: #0d1f15; color: var(--text); }
 .pc-icon { color: var(--green); font-weight: 700; flex-shrink: 0; }
+.pc-con { background: var(--red-bg); color: var(--text); }
+.pc-con .pc-icon { color: var(--red); }
+
+/* ========== PROBLEM -> SOLUTION ========== */
+.problem-solution-section {
+  max-width: 900px;
+  margin: 70px auto 0;
+  padding: 0 20px;
+  position: relative;
+  z-index: 1;
+}
+.ps-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+}
+.ps-col {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 24px 26px;
+}
+.ps-col-without { border-right: 3px solid var(--red); }
+.ps-col-with { border-right: 3px solid var(--green); }
+.ps-col-title {
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  margin-bottom: 16px;
+}
+.ps-col-without .ps-col-title { color: var(--red); }
+.ps-col-with .ps-col-title { color: var(--green); }
+@media (max-width: 768px) {
+  .ps-grid { grid-template-columns: 1fr; }
+}
 
 /* ========== CTA BAND ========== */
 .cta-band {
@@ -1833,60 +1878,141 @@ body {
   <div class="bg-orb bg-orb-2"></div>
 </div>
 
-<!-- ========== HERO ========== -->
+<!-- ═══════════════════════════════
+     1. HERO
+     ═══════════════════════════════ -->
 <div class="hero">
   <div class="hero-line-top"></div>
   <div class="hero-glow"></div>
   <div class="hero-eyebrow">متخصصون في مواقع الكافيهات المصرية</div>
   <h1 class="hero-title">
-    عملاؤك بيدوروا عليك<br>
-    <span class="accent">هل بيلاقوك؟</span>
+    كافيهك يستاهل عملاء أكتر<br>
+    <span class="accent">مش بس متابعين على إنستجرام</span>
   </h1>
-  <p class="hero-sub">لما حد يسأل "إيه منيو الكافيه ده؟" أو "فين بالظبط؟" — الموقع بيرد عنك على طول. بدون ما تتكلم، وبدون ما تفوّت عميل.</p>
+  <p class="hero-sub">لما العميل يدور عليك، بيدور على جوجل — مش إنستجرام. موقعك بيرد عنك على مدار الساعة: المنيو، الموقع، ساعات العمل — من غير ما ترد رسالة واحدة أو تخسر عميل تاني.</p>
   <div class="hero-actions">
-    <a class="hero-btn hero-btn-primary" href="#packages">اشوف الباقات والأسعار</a>
-    <a class="hero-btn hero-btn-secondary" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أعرف%20تفاصيل%20أكتر%20عن%20باقات%20المواقع" target="_blank">💬 اسألنا على واتساب</a>
+    <a class="hero-btn hero-btn-primary" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أطلب%20موقعي%20لكافيهي" target="_blank">☕ اطلب موقعك</a>
+    <a class="hero-btn hero-btn-secondary" href="#demo-section">👁 شوف نموذج</a>
+  </div>
+  <div class="hero-note">
+    <span class="hero-note-dot"></span>
+    التسليم من يوم واحد · بدون عقود · بدون رسوم مفاجئة
   </div>
 </div>
 
-<!-- ========== FEATURES SECTION ========== -->
-<div class="features-section" id="features">
-  <div class="section-label reveal">ماذا ستحصل</div>
-  <div class="section-title reveal">ماذا ستحصل عند طلب <span class="gold">موقع لكافيهك؟</span></div>
-  <p class="section-sub reveal">كل موقع بنعمله بيجي بمميزات أساسية بتفرق فعلاً في تجربة العميل</p>
-  <div class="features-grid">
-    <div class="feat-card reveal tilt-card" style="transition-delay: 0.05s;">
-      <span class="feat-card-icon">📱</span>
-      <div class="feat-card-title">متوافق مع جميع الهواتف</div>
-      <p class="feat-card-text">يظهر الموقع بشكل مثالي على الموبايل والتابلت والكمبيوتر ليحصل العميل على أفضل تجربة تصفح.</p>
+<!-- ═══════════════════════════════
+     2. PROBLEM
+     ═══════════════════════════════ -->
+<div class="problem-solution-section" id="problem-solution">
+  <div class="section-label reveal">المشكلة</div>
+  <div class="section-title reveal">الانستجرام وحده <span class="gold">مش كافي</span></div>
+  <p class="section-sub reveal">العميل اللي بيدور على كافيه بيفتح جوجل — ولو ملقيش موقع راح لكافيه تاني</p>
+  <div class="ps-grid">
+    <div class="ps-col ps-col-without reveal">
+      <div class="ps-col-title">❌ بدون موقع</div>
+      <div class="pc-item pc-con"><span class="pc-icon">✗</span>العميل يسأل عن المنيو وانت مشغول</div>
+      <div class="pc-item pc-con"><span class="pc-icon">✗</span>صعب الوصول للمكان وتحديد العنوان</div>
+      <div class="pc-item pc-con"><span class="pc-icon">✗</span>الانستجرام وحده مش كافي لبناء ثقة</div>
     </div>
-    <div class="feat-card reveal tilt-card" style="transition-delay: 0.15s;">
+    <div class="ps-col ps-col-with reveal" style="transition-delay:0.1s;">
+      <div class="ps-col-title">✅ مع موقع</div>
+      <div class="pc-item pc-pro"><span class="pc-icon">✓</span>المنيو متاح 24 ساعة من غير ما ترد رسالة</div>
+      <div class="pc-item pc-pro"><span class="pc-icon">✓</span>وصول أسهل — Google Maps بضغطة واحدة</div>
+      <div class="pc-item pc-pro"><span class="pc-icon">✓</span>شكل احترافي يخليك مختلف عن أي كافيه تاني</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     3. HOW IT WORKS (Solution)
+     ═══════════════════════════════ -->
+<div class="problem-solution-section" id="how-it-works" style="margin-top:70px;">
+  <div class="section-label reveal">الحل</div>
+  <div class="section-title reveal">إزاي <span class="gold">بنشتغل مع بعض؟</span></div>
+  <p class="section-sub reveal">أربع خطوات بسيطة — انت بتبعت المنيو واللوجو، إحنا بنعمل الباقي</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-top:8px;">
+    <div class="ps-col reveal" style="border-right:3px solid var(--gold-dim);">
+      <div style="font-size:28px;margin-bottom:10px;">1️⃣</div>
+      <div class="ps-col-title" style="color:var(--gold-light);">إرسال المنيو واللوجو</div>
+      <div style="font-size:13px;color:var(--text-sec);line-height:1.7;">تبعتلنا صور المنيو ولوجو الكافيه على واتساب — وهو ده كل اللي محتاجه منك في الأول</div>
+    </div>
+    <div class="ps-col reveal" style="border-right:3px solid var(--gold-dim);transition-delay:0.1s;">
+      <div style="font-size:28px;margin-bottom:10px;">2️⃣</div>
+      <div class="ps-col-title" style="color:var(--gold-light);">تجهيز التصميم</div>
+      <div style="font-size:13px;color:var(--text-sec);line-height:1.7;">بنعمل تصميم مخصص لكافيهك خلال 1 إلى 7 أيام — انت ما بتشتغلش في حاجة</div>
+    </div>
+    <div class="ps-col reveal" style="border-right:3px solid var(--gold-dim);transition-delay:0.2s;">
+      <div style="font-size:28px;margin-bottom:10px;">3️⃣</div>
+      <div class="ps-col-title" style="color:var(--gold-light);">مراجعة</div>
+      <div style="font-size:13px;color:var(--text-sec);line-height:1.7;">بنبعتهولك تشوفه وتقول رأيك — هنعدل أي حاجة مش عاجباك قبل ما يتنشر</div>
+    </div>
+    <div class="ps-col reveal" style="border-right:3px solid var(--green);transition-delay:0.3s;">
+      <div style="font-size:28px;margin-bottom:10px;">4️⃣</div>
+      <div class="ps-col-title" style="color:var(--green);">نشر الموقع 🎉</div>
+      <div style="font-size:13px;color:var(--text-sec);line-height:1.7;">الموقع بيتنشر ويكون متاح لأي عميل يدور عليك — وبتاخد الرابط في نفس اليوم</div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     4. DEMO SHOWCASE
+     ═══════════════════════════════ -->
+<div class="problem-solution-section" id="demo-section" style="margin-top:60px;">
+  <div class="section-label reveal">نموذج</div>
+  <div class="section-title reveal">شوف <span class="gold">كيف يبدو الموقع</span></div>
+  <div class="ps-col reveal" style="border-right:3px solid var(--gold);max-width:560px;margin:0 auto;text-align:center;">
+    <div style="font-size:36px;margin-bottom:12px;">☕</div>
+    <div style="font-size:14px;font-weight:700;color:var(--gold-light);margin-bottom:8px;">هذا نموذج — ويتم تخصيصه لكل كافيه</div>
+    <div style="font-size:13px;color:var(--text-sec);line-height:1.7;margin-bottom:20px;">الموقع اللي هتشوفه نموذج توضيحي فقط — لما نشتغل مع بعض، كل حاجة بتتغير: الاسم، اللوجو، المنيو، والألوان على حسب هوية كافيهك</div>
+    <a class="hero-btn hero-btn-primary" style="display:inline-flex;" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أشوف%20نموذج%20موقع%20الكافيه" target="_blank">👁 تجربة النموذج</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     5. FEATURES (What's Included)
+     ═══════════════════════════════ -->
+<div class="features-section" id="features" style="margin-top:70px;">
+  <div class="section-label reveal">المميزات</div>
+  <div class="section-title reveal">إيه اللي <span class="gold">بيجي مع كل موقع؟</span></div>
+  <p class="section-sub reveal">كل موقع بنعمله بيشمل الأساسيات اللي كل كافيه محتاجها</p>
+  <div class="features-grid">
+    <div class="feat-card reveal tilt-card" style="transition-delay:0.05s;">
+      <span class="feat-card-icon">📱</span>
+      <div class="feat-card-title">متوافق مع الموبايل 100%</div>
+      <p class="feat-card-text">يظهر بشكل مثالي على أي تليفون — لأن معظم عملاء الكافيهات بيبحثوا من موبايلهم.</p>
+    </div>
+    <div class="feat-card reveal tilt-card" style="transition-delay:0.1s;">
+      <span class="feat-card-icon">🍽️</span>
+      <div class="feat-card-title">صفحة منيو كاملة</div>
+      <p class="feat-card-text">المنيو متاح 24 ساعة، سهل القراءة، من غير ما العميل يسأل أو ينتظر رد.</p>
+    </div>
+    <div class="feat-card reveal tilt-card" style="transition-delay:0.15s;">
+      <span class="feat-card-icon">💬</span>
+      <div class="feat-card-title">واتساب بضغطة واحدة</div>
+      <p class="feat-card-text">زرار واتساب مباشر مع رسالة جاهزة — العميل يتواصل معاك في ثانية واحدة.</p>
+    </div>
+    <div class="feat-card reveal tilt-card" style="transition-delay:0.2s;">
+      <span class="feat-card-icon">📍</span>
+      <div class="feat-card-title">ربط Google Maps</div>
+      <p class="feat-card-text">العميل يلاقيك بضغطة واحدة — مفيش حجة "مش لاقيكم" تاني.</p>
+    </div>
+    <div class="feat-card reveal tilt-card" style="transition-delay:0.25s;">
       <span class="feat-card-icon">⚡</span>
       <div class="feat-card-title">سرعة تحميل عالية</div>
-      <p class="feat-card-text">موقع سريع وخفيف يساعد العميل على الوصول للمنيو والمعلومات خلال ثوانٍ بدون انتظار.</p>
+      <p class="feat-card-text">موقع خفيف وسريع — العميل مش هيستنى وهيلاقي اللي بيدور عليه في ثوانٍ.</p>
     </div>
-    <div class="feat-card reveal tilt-card" style="transition-delay: 0.25s;">
-      <span class="feat-card-icon">📍</span>
-      <div class="feat-card-title">ربط مباشر مع Google Maps و WhatsApp</div>
-      <p class="feat-card-text">العميل يقدر يفتح الموقع ويصل للكافيه أو يتواصل معك بضغطة واحدة فقط.</p>
+    <div class="feat-card reveal tilt-card" style="transition-delay:0.3s;">
+      <span class="feat-card-icon">✏️</span>
+      <div class="feat-card-title">تعديل بعد التسليم</div>
+      <p class="feat-card-text">بعت التعديل على واتساب وهنعمله — أسعار، أصناف جديدة، أي حاجة تحتاجها.</p>
     </div>
   </div>
 </div>
 
-<!-- PROS/CONS -->
-<div class="monthly-explain" style="margin-top: 60px;">
-  <div class="pros-cons-box reveal">
-    <div class="pros-cons-title">ليه كافيهك محتاج موقع؟</div>
-    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>عملاء جدد بدون إعلانات</div>
-    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>منيو دايماً محدّث في إيد العميل</div>
-    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>مظهر احترافي يفرق عن المنافسين</div>
-    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>رابط واحد في البايو بيغني عن كل الأسئلة — حطه في السوشيال ميديا وخلي الموقع يتكلم عنك</div>
-    <div class="pc-item pc-pro"><span class="pc-icon">✓</span>بيبنيلك صورة احترافية وبيميزك عن باقي الكافيهات</div>
-  </div>
-</div>
-
-<!-- AVAILABILITY BADGE -->
-<div class="availability-bar">
+<!-- ═══════════════════════════════
+     6. PRICING
+     ═══════════════════════════════ -->
+<div class="availability-bar" style="margin-top:60px;">
   <div class="availability-inner reveal">
     <span class="availability-dot"></span>
     <span class="availability-text">الأماكن المتاحة محدودة هذا الشهر</span>
@@ -1895,25 +2021,24 @@ body {
   </div>
 </div>
 
-<!-- ========== PACKAGES ========== -->
-<div class="packages-section" style="margin-top: 60px;" id="packages">
-  <div class="section-label reveal">اختار الباقة المناسبة</div>
+<div class="packages-section" style="margin-top:40px;" id="packages">
+  <div class="section-label reveal">الأسعار</div>
   <div class="section-title reveal">باقاتنا <span class="gold">الاحترافية</span></div>
-  <p class="section-sub reveal">سعر واحد بلا مفاجآت — الموقع يشتغل من أول يوم</p>
+  <p class="section-sub reveal">سعر تنفيذ واحد بلا مفاجآت — الدعم الشهري اختياري وموضح بالتفصيل</p>
 
   <div class="packages-grid">
 
     <!-- STARTER -->
-    <div class="pkg pkg-starter reveal-scale tilt-card" style="transition-delay: 0.05s;">
+    <div class="pkg pkg-starter reveal-scale tilt-card" style="transition-delay:0.05s;">
       <span class="pkg-badge badge-gray">ستارتر</span>
       <div class="pkg-name">صفحة تعريفية</div>
-      <p class="pkg-desc">للكافيهات اللي عايزة حضور بسيط على النت بأقل تكلفة</p>
+      <p class="pkg-desc">حضور سريع على النت بأقل تكلفة — مناسب لأي كافيه عايز يبدأ</p>
       <div class="pkg-pricing">
         <div class="price-setup">
           <span class="price-num">999</span>
           <span class="price-unit">جنيه</span>
         </div>
-        <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">مرة واحدة فقط</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">سعر التنفيذ — مرة واحدة فقط</div>
         <div class="price-monthly free">
           <strong>مجاني تماماً</strong><span>بدون رسوم شهرية</span>
         </div>
@@ -1928,7 +2053,7 @@ body {
         <div class="feat yes-feat"><span class="feat-icon yes">✓</span>ديزاين بسيط ونظيف</div>
         <div class="feat no-feat"><span class="feat-icon no">✗</span>دومين خاص (.com)</div>
         <div class="feat no-feat"><span class="feat-icon no">✗</span>تقييمات العملاء</div>
-        <div class="feat no-feat"><span class="feat-icon no">✗</span>تعديلات بعد التسليم</div>
+        <div class="feat no-feat"><span class="feat-icon no">✗</span>تعديلات شهرية</div>
       </div>
       <div class="pkg-cta">
         <a class="btn-main btn-link" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أبدأ%20بباقة%20الستارتر%20(999%20جنيه)%20لكافيهي%2C%20جاهز%20نتكلم%20في%20التفاصيل" target="_blank">ابدأ بالستارتر</a>
@@ -1936,7 +2061,7 @@ body {
     </div>
 
     <!-- PRO - FEATURED -->
-    <div class="pkg pkg-pro reveal-scale tilt-card" style="transition-delay: 0.15s;">
+    <div class="pkg pkg-pro reveal-scale tilt-card" style="transition-delay:0.15s;">
       <div class="pro-corner-glow"></div>
       <span class="pkg-badge badge-gold">🔥 الأكثر اختياراً بين أصحاب الكافيهات</span>
       <div class="pkg-name">موقع احترافي</div>
@@ -1946,9 +2071,9 @@ body {
           <span class="price-num">2499</span>
           <span class="price-unit">جنيه</span>
         </div>
-        <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">مرة واحدة فقط</div>
+        <div style="font-size:11px;color:var(--text-dim);margin-bottom:10px;">سعر التنفيذ — مرة واحدة فقط</div>
         <div class="price-monthly">
-          <strong>+ 150 جنيه / شهر</strong>
+          <strong>+ 150 جنيه / شهر</strong><span style="font-size:11px;color:var(--text-dim);margin-right:4px;">(دومين + هوست — اختياري)</span>
         </div>
         <div class="delivery-tag">⏱ التسليم: <span>من 3 لغاية 5 أيام</span></div>
       </div>
@@ -1967,34 +2092,18 @@ body {
       </div>
     </div>
 
-    <!-- PREMIUM — DIAMOND ELITE -->
-    <div class="pkg pkg-premium reveal-scale" style="transition-delay: 0.25s; position: relative;">
-
-      <!-- Ambient glow behind the card -->
+    <!-- PREMIUM -->
+    <div class="pkg pkg-premium reveal-scale" style="transition-delay:0.25s;position:relative;">
       <div class="pkg-premium-ambient"></div>
-
-      <!-- Glowing border shine sweep -->
       <div class="pkg-premium-shine"></div>
-
-      <!-- Sparkling particles -->
       <div class="pkg-premium-sparks">
-        <span class="spark"></span>
-        <span class="spark"></span>
-        <span class="spark"></span>
-        <span class="spark"></span>
-        <span class="spark"></span>
-        <span class="spark"></span>
+        <span class="spark"></span><span class="spark"></span><span class="spark"></span>
+        <span class="spark"></span><span class="spark"></span><span class="spark"></span>
       </div>
-
-      <!-- TOP TIER ribbon -->
       <div class="pkg-premium-ribbon">TOP TIER</div>
-
-      <!-- Badge -->
       <span class="pkg-badge badge-platinum">💎 DIAMOND ELITE</span>
-
-      <div class="pkg-name" style="font-size:22px; color: var(--diamond-pale);">حضور كامل</div>
-      <p class="pkg-desc" style="color: rgba(139,233,255,0.55);">للكافيهات الكبيرة أو اللي عندها أكتر من فرع وعايزة تبان مختلفة عن أي حد تاني</p>
-
+      <div class="pkg-name" style="font-size:22px;color:var(--diamond-pale);">حضور كامل</div>
+      <p class="pkg-desc" style="color:rgba(139,233,255,0.55);">للكافيهات الكبيرة أو اللي عندها أكتر من فرع</p>
       <div class="pkg-pricing">
         <span class="discount-tag">🔥 خصم لفترة محدودة</span>
         <div class="price-setup">
@@ -2002,277 +2111,107 @@ body {
           <span class="price-num">3500</span>
           <span class="price-unit">جنيه</span>
         </div>
-        <div style="font-size:11px;color:rgba(0,212,255,0.45);margin-bottom:10px;">مرة واحدة فقط</div>
+        <div style="font-size:11px;color:rgba(0,212,255,0.45);margin-bottom:10px;">سعر التنفيذ — مرة واحدة فقط</div>
         <div class="price-monthly">
-          <strong>+ 250 جنيه / شهر</strong>
+          <strong>+ 250 جنيه / شهر</strong><span style="font-size:11px;color:rgba(0,212,255,0.45);margin-right:4px;">(دومين + هوست — اختياري)</span>
         </div>
         <div class="delivery-tag">⏱ التسليم: <span>من 5 لغاية 7 أيام</span></div>
       </div>
-
       <div class="pkg-divider"></div>
-
       <div class="pkg-features">
         <div class="feat yes-feat"><span class="feat-icon yes">✓</span>كل حاجة في الاحترافي</div>
-        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>تعديلات شهرية <strong style="color:var(--diamond-light)">موسّعة</strong> — منيو، أسعار</div>
-        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>QR Code للموقع — يتحط على الطرابيزة وكل عميل يدخل الموقع بمسحة واحدة</div>
-        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>دارك مود ولايت مود — العميل يختار اللي يريحه</div>
-        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>زرار "شارك المنيو" — العميل يبعت الموقع لصحابه على واتساب بضغطة</div>
-        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>شريط إنستجرام حي — بيعرض متابعينك وبيبني ثقة من أول نظرة</div>
-        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>دعم واتساب أولوية — ردود خلال 24 ساعة طول الأسبوع</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>تعديلات شهرية <strong style="color:var(--diamond-light)">موسّعة</strong></div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>QR Code للموقع على الطرابيزة</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>دارك مود ولايت مود</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>زرار "شارك المنيو" على واتساب</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>شريط إنستجرام حي</div>
+        <div class="feat yes-feat"><span class="feat-icon yes">✓</span>دعم واتساب أولوية 24 ساعة</div>
       </div>
-
       <div class="pkg-cta">
         <a class="btn-main btn-link btn-premium" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أبدأ%20بباقة%20البريميوم%20(3500%20جنيه%20%2B%20250%20جنيه%2Fشهر)%20لكافيهي%2C%20جاهز%20نتكلم%20في%20التفاصيل" target="_blank">💎 احصل على Diamond Elite</a>
       </div>
-
     </div>
 
   </div>
 </div>
 
-<div class="cta-band" style="margin-top: 50px;">
-  <p class="cta-band-text">محتار أي باقة تناسبك؟ احجز استشارة مجانية وهنساعدك تختار</p>
-  <div class="cta-band-btns">
-    <a class="cta-chip" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أحجز%20استشارة%20مجانية%20لمعرفة%20الباقة%20المناسبة%20لكافيهي" target="_blank">📅 احجز استشارة مجانية</a>
-    <a class="cta-chip" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أطلب%20موقعي%20لكافيهي" target="_blank">🚀 اطلب موقعك</a>
-  </div>
-</div>
-
-<!-- ========== COMPARISON ========== -->
-<div class="compare-section">
-  <div class="section-label reveal">مقارنة سريعة</div>
-  <div class="section-title reveal">إيه الفرق <span class="gold">الحقيقي</span> بين الباقات؟</div>
-  <p class="section-sub reveal">كل باقة مبنية لمرحلة مختلفة من نمو الكافيه — اختار اللي يناسب احتياجك دلوقتي</p>
-  <div class="compare-grid">
-
-    <div class="compare-card tier-starter reveal" style="transition-delay:0.05s;">
-      <div class="compare-card-head">
-        <div class="compare-icon-badge">☕</div>
-        <div>
-          <div class="compare-card-name">ستارتر</div>
-          <div class="compare-card-tag">بداية سريعة وبسيطة</div>
-        </div>
-      </div>
-      <div class="compare-price-block">
-        <div class="compare-price" style="unicode-bidi:isolate;">999 جم</div>
-        <div class="compare-monthly">بدون رسوم شهرية</div>
-      </div>
-      <div class="compare-divider"></div>
-      <div class="compare-rows">
-        <div class="compare-row"><span class="feat-name">ربط واتساب مباشر</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">توافق كامل مع الجوال</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv no">✗</span></div>
-        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv no">✗</span></div>
-        <div class="compare-row"><span class="feat-name">استضافة ودومين</span><span class="cv no">غير مشمول</span></div>
-        <div class="compare-row"><span class="feat-name">تعديلات بعد التسليم</span><span class="cv no">✗</span></div>
-        <div class="compare-row"><span class="feat-name">QR Code للموقع</span><span class="cv no">✗</span></div>
-        <div class="compare-row"><span class="feat-name">أولوية في التنفيذ</span><span class="cv no">✗</span></div>
-        <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv gray">أساسي</span></div>
-        <div class="compare-row"><span class="feat-name">وقت التنفيذ</span><span class="cv gray">1-2 يوم</span></div>
-      </div>
-      <div class="compare-cta">يناسب البداية السريعة</div>
-    </div>
-
-    <div class="compare-card tier-pro hot reveal" style="transition-delay:0.15s;">
-      <div class="compare-card-head">
-        <div class="compare-icon-badge">✦</div>
-        <div>
-          <div class="compare-card-name">احترافي</div>
-          <div class="compare-card-tag">الأكثر طلباً من أصحاب الكافيهات</div>
-        </div>
-      </div>
-      <div class="compare-price-block">
-        <div class="compare-price" style="unicode-bidi:isolate;">2499 جم</div>
-        <div class="compare-monthly" style="unicode-bidi:isolate;">+ 150 جم / شهر</div>
-      </div>
-      <div class="compare-divider"></div>
-      <div class="compare-rows">
-        <div class="compare-row"><span class="feat-name">ربط واتساب مباشر</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">توافق كامل مع الجوال</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">استضافة ودومين</span><span class="cv yes">✓ مشمول</span></div>
-        <div class="compare-row"><span class="feat-name">تعديلات بعد التسليم</span><span class="cv gold">تعديل شهري</span></div>
-        <div class="compare-row"><span class="feat-name">QR Code للموقع</span><span class="cv no">✗</span></div>
-        <div class="compare-row"><span class="feat-name">أولوية في التنفيذ</span><span class="cv no">✗</span></div>
-        <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv gold-text">سريع عبر واتساب</span></div>
-        <div class="compare-row"><span class="feat-name">وقت التنفيذ</span><span class="cv gold">3-5 أيام</span></div>
-      </div>
-      <div class="compare-cta">الأكثر توازناً للكافيهات</div>
-    </div>
-
-    <div class="compare-card tier-premium reveal" style="transition-delay:0.25s;">
-      <div class="compare-diamond-mark">
-        <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-          <path d="M12 1L23 9L12 23L1 9L12 1Z" fill="var(--diamond)" opacity="0.85"/>
-          <path d="M12 1L17.5 9L12 23L6.5 9L12 1Z" fill="var(--diamond-light)" opacity="0.6"/>
-        </svg>
-      </div>
-      <div class="compare-card-head">
-        <div class="compare-icon-badge">💎</div>
-        <div>
-          <div class="compare-card-name">بريميوم</div>
-          <div class="compare-card-tag">أقصى نمو وحضور رقمي كامل</div>
-        </div>
-      </div>
-      <div class="compare-price-block">
-        <span class="compare-discount-tag">🔥 خصم</span>
-        <div class="compare-price-old">5000 جم</div>
-        <div class="compare-price" style="unicode-bidi:isolate;">3500 جم</div>
-        <div class="compare-monthly" style="unicode-bidi:isolate;">+ 250 جم / شهر</div>
-      </div>
-      <div class="compare-divider"></div>
-      <div class="compare-rows">
-        <div class="compare-row"><span class="feat-name">ربط واتساب مباشر</span><span class="cv diamond-yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">توافق كامل مع الجوال</span><span class="cv diamond-yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">تصميم مخصص للكافيه</span><span class="cv diamond">حصري + أنيميشنز</span></div>
-        <div class="compare-row"><span class="feat-name">قائمة طعام احترافية</span><span class="cv diamond-yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">استضافة ودومين</span><span class="cv diamond-yes">✓ مشمول بالكامل</span></div>
-        <div class="compare-row"><span class="feat-name">تعديلات بعد التسليم</span><span class="cv diamond">تعديلات موسّعة شهرياً</span></div>
-        <div class="compare-row"><span class="feat-name">QR Code للموقع</span><span class="cv diamond-yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">أولوية في التنفيذ</span><span class="cv diamond-yes">✓</span></div>
-        <div class="compare-row"><span class="feat-name">دعم فني</span><span class="cv diamond">أولوية فورية</span></div>
-        <div class="compare-row"><span class="feat-name">وقت التنفيذ</span><span class="cv diamond">5-7 أيام</span></div>
-      </div>
-      <div class="compare-cta">أعلى قيمة لنمو طويل المدى</div>
-    </div>
-
-  </div>
-</div>
-
-<!-- EXPLAIN BOX -->
-<div class="monthly-explain" style="margin-top: 60px;">
+<!-- Monthly explain — compact, no separate section -->
+<div class="monthly-explain" style="margin-top:32px;">
   <div class="explain-box reveal">
-    <div class="explain-title">إيه معنى الرسوم الشهرية؟</div>
-    <p class="explain-text">
-      لما بتدفع مرة واحدة بس، الموقع بيتعمل وخلاص — لكن الدومين (اسم الموقع) والهوست (المكان اللي الموقع شغال عليه) ليهم تكلفة متكررة كل شهر. الرسوم الشهرية بتغطي الاتنين دول، وكمان لو عايز تغير أي حاجة في الموقع زي الأسعار أو المنيو، بيتعمل على طول من غير ما تدفع حاجة زيادة.
-    </p>
+    <div class="explain-title">الرسوم الشهرية — اختيارية وموضحة مسبقاً</div>
+    <p class="explain-text">سعر التنفيذ بيتدفع مرة واحدة بس. الرسوم الشهرية اختيارية وبتشمل الدومين الخاص والهوست وتعديلات المنيو. الستارتر بيشتغل بدون أي رسوم شهرية خالص.</p>
     <div class="explain-items">
-      <div class="explain-item">تجديد الدومين سنوياً</div>
+      <div class="explain-item">تجديد الدومين</div>
       <div class="explain-item">الهوست شغال دايماً</div>
-      <div class="explain-item">تغيير أسعار المنيو</div>
+      <div class="explain-item">تغيير المنيو والأسعار</div>
       <div class="explain-item">دعم فني سريع</div>
     </div>
   </div>
 </div>
 
-<!-- VALUE ADDS -->
-<div class="value-section" style="margin-top: 70px;">
-  <div class="section-label reveal">إيه اللي بيفرق فعلاً</div>
-  <div class="section-title reveal">غير المنيو، <span class="gold">إيه اللي بتحصل عليه؟</span></div>
-  <p class="section-sub reveal">كل موقع بيجي بمجموعة مميزات بتخلي العميل يتواصل معاك بسهولة</p>
-  <div class="value-grid">
-    <div class="value-card reveal tilt-card" style="transition-delay:0.05s;">
-      <div class="value-icon-badge">📍</div>
-      <div class="value-card-title">الموقع على الخريطة</div>
-      <div class="value-card-text">العميل بيسكان الـ QR وعايز يعرف إنتوا فين بالظبط — ربط Google Maps مباشرة بيخلي مفيش حجة "مش لاقينكم"</div>
-    </div>
-    <div class="value-card reveal tilt-card" style="transition-delay:0.1s;">
-      <div class="value-icon-badge">⭐</div>
-      <div class="value-card-title">تقييمات العملاء</div>
-      <div class="value-card-text">بيبني ثقة مع الناس اللي شايفين الموقع لأول مرة — سواء تقييمات Google أو فورم صغير جوه الموقع</div>
-    </div>
-    <div class="value-card reveal tilt-card" style="transition-delay:0.15s;">
-      <div class="value-icon-badge">💬</div>
-      <div class="value-card-title">زرار واتساب مباشر</div>
-      <div class="value-card-text">بدل ما العميل يدور على رقمك، زرار واحد بيفتحله واتساب مع رسالة جاهزة — "أهلاً، عايز أحجز طاولة"</div>
-    </div>
-    <div class="value-card reveal tilt-card" style="transition-delay:0.2s;">
-      <div class="value-icon-badge">🕐</div>
-      <div class="value-card-title">ساعات العمل</div>
-      <div class="value-card-text">العميل معرفش هل الكافيه فاتح ولا لأ — ساعات العمل الواضحة بتوفر عليه سؤال وعليك رد</div>
-    </div>
-    <div class="value-card reveal tilt-card" style="transition-delay:0.25s;">
-      <div class="value-icon-badge">📸</div>
-      <div class="value-card-title">صور المكان</div>
-      <div class="value-card-text">صور جميلة للمكان بتحسس العميل إنه عايز يجي — قبل ما يدخل باب الكافيه خالص</div>
-    </div>
-    <div class="value-card reveal tilt-card" style="transition-delay:0.3s;">
-      <div class="value-icon-badge">📱</div>
-      <div class="value-card-title">تليفون قابل للضغط</div>
-      <div class="value-card-text">رقم "اتصل بنا" قابل للضغط على المحمول بيفرق جداً — ما محدش بيكتب أرقام باليد في 2026</div>
-    </div>
-  </div>
-</div>
-
-<div class="cta-band" style="margin-top: 60px;">
-  <p class="cta-band-text">جاهز تبدأ؟ كلمنا دلوقتي وهنرد عليك بأسرع وقت</p>
-  <div class="cta-band-btns">
-    <a class="cta-chip" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أطلب%20موقعي%20لكافيهي" target="_blank">💬 تواصل الآن</a>
-  </div>
-</div>
-
-<!-- ========== FAQ ========== -->
-<div class="faq-section">
-  <div class="section-label reveal">الأسئلة الشائعة</div>
+<!-- ═══════════════════════════════
+     7. FAQ
+     ═══════════════════════════════ -->
+<div class="faq-section" style="margin-top:70px;">
+  <div class="section-label reveal">أسئلة شائعة</div>
   <div class="section-title reveal"><span class="gold">الأسئلة الشائعة</span></div>
-  <p class="section-sub reveal">إجابات على أكتر الأسئلة اللي بتيجي من أصحاب الكافيهات قبل ما يبدأوا</p>
+  <p class="section-sub reveal">إجابات على أكتر الأسئلة اللي بتيجي من أصحاب الكافيهات</p>
 
   <div class="faq-list">
 
+    <div class="faq-item reveal" style="transition-delay:0s;">
+      <button class="faq-q"><span>هل الموقع بيشتغل على الموبايل؟</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>أيوه، 100٪. كل موقع بنعمله بيكون متوافق تماماً مع الموبايل — لأن معظم عملاء الكافيهات بيبحثوا من تليفوناتهم.</p></div>
+    </div>
+
     <div class="faq-item reveal" style="transition-delay:0.05s;">
-      <button class="faq-q">
-        <span>كم يستغرق تنفيذ الموقع؟</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">
-        <p>يتوقف على الباقة المختارة. باقة ستارتر تُسلَّم خلال يوم إلى يومين، الاحترافي من 3 إلى 5 أيام، والبريميوم من 5 إلى 7 أيام عمل. نبدأ بمجرد استلام المحتوى منك.</p>
-      </div>
+      <button class="faq-q"><span>كم مدة التنفيذ؟</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>ستارتر: يوم إلى يومين. احترافي: 3 إلى 5 أيام. بريميوم: 5 إلى 7 أيام. المدة بتبدأ من لحظة ما نستلم المنيو واللوجو منك.</p></div>
     </div>
 
     <div class="faq-item reveal" style="transition-delay:0.1s;">
-      <button class="faq-q">
-        <span>هل يمكنني تعديل المنيو لاحقاً؟</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">
-        <p>نعم. باقة الاحترافي تشمل تعديلاً شهرياً واحداً، وباقة البريميوم تشمل عدداً أكبر من التعديلات الشهرية حسب الباقة. كل ما عليك فعله هو إرسال التعديلات على الواتساب وسنُنفّذها في أقرب وقت.</p>
-      </div>
+      <button class="faq-q"><span>هل أقدر أعدل المنيو بعد ما الموقع يتسلم؟</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>التعديلات بتتم عن طريقنا على واتساب — بعتلنا التعديل وهنعمله في أسرع وقت. الاحترافي: تعديل شهري مجاني. البريميوم: تعديلات موسعة. الستارتر: تعديل واحد بعد التسليم.</p></div>
     </div>
 
     <div class="faq-item reveal" style="transition-delay:0.15s;">
-      <button class="faq-q">
-        <span>هل توجد رسوم شهرية؟</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">
-        <p>باقة ستارتر لا تشمل أي رسوم شهرية. أما باقتا الاحترافي والبريميوم فتشملان رسوماً شهرية تغطي الدومين والاستضافة والتعديلات الدورية. السعر ثابت ومُعلَن مسبقاً بلا مفاجآت.</p>
-      </div>
+      <button class="faq-q"><span>هل محتاج دومين من الأول؟</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>مش لازم. الستارتر بيشتغل على رابط مجاني من غير دومين خاص. لو عايز اسم موقع زي (cafename.com) ده متاح في الاحترافي والبريميوم ضمن الرسوم الشهرية.</p></div>
     </div>
 
     <div class="faq-item reveal" style="transition-delay:0.2s;">
-      <button class="faq-q">
-        <span>هل الدومين والاستضافة مشمولان؟</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">
-        <p>نعم، في باقتي الاحترافي والبريميوم الدومين الخاص (.com أو .shop) والاستضافة مشمولان ضمن الرسوم الشهرية. لن تحتاج إلى التعامل مع أي جهة خارجية أو دفع أي رسوم إضافية.</p>
-      </div>
+      <button class="faq-q"><span>هل توجد رسوم شهرية إجبارية؟</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>الستارتر: بدون أي رسوم شهرية خالص. الاحترافي والبريميوم: الرسوم الشهرية اختيارية وبتشمل الدومين والهوست والتعديلات — السعر ثابت ومُعلَن مسبقاً بلا مفاجآت.</p></div>
     </div>
 
     <div class="faq-item reveal" style="transition-delay:0.25s;">
-      <button class="faq-q">
-        <span>إزاي بتواصل معايا لو احتجت دعم فني؟</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">
-        <p>التواصل بيكون مباشر عن طريق الواتساب. باقة ستارتر بتاخد دعم أساسي للأسئلة العامة، وباقتا الاحترافي والبريميوم بتاخدوا أولوية في الرد ضمن وقت العمل.</p>
-      </div>
+      <button class="faq-q"><span>إزاي أتواصل معاكم لو احتجت دعم؟</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>التواصل مباشر على واتساب. الاحترافي والبريميوم بياخدوا أولوية في الرد ضمن وقت العمل.</p></div>
     </div>
 
     <div class="faq-item reveal" style="transition-delay:0.3s;">
-      <button class="faq-q">
-        <span>ماذا يحدث بعد انتهاء الاشتراك؟</span>
-        <span class="faq-icon">+</span>
-      </button>
-      <div class="faq-a">
-        <p>إذا قررت إيقاف الاشتراك، يتوقف الموقع عن العمل مع انتهاء دورة الدفع الحالية. يمكنك استئناف الخدمة في أي وقت بنفس الإعدادات. لا يوجد عقد ملزم ولا رسوم إلغاء.</p>
-      </div>
+      <button class="faq-q"><span>ماذا يحدث لو وقفت الاشتراك؟</span><span class="faq-icon">+</span></button>
+      <div class="faq-a"><p>الموقع بيتوقف مع انتهاء دورة الدفع. تقدر تستأنف في أي وقت بنفس الإعدادات. مفيش عقد ملزم ولا رسوم إلغاء.</p></div>
     </div>
 
   </div>
 </div>
 
+<!-- ═══════════════════════════════
+     8. FINAL CTA
+     ═══════════════════════════════ -->
+<div class="cta-band" style="margin-top:70px;padding-bottom:20px;">
+  <p class="cta-band-text" style="font-size:16px;color:var(--text);font-weight:600;">جاهز تبدأ؟ كلمنا دلوقتي على واتساب</p>
+  <p style="font-size:13px;color:var(--text-sec);margin-bottom:20px;">التسليم من يوم واحد · بدون عقود · بدون رسوم مفاجئة</p>
+  <div class="cta-band-btns">
+    <a class="hero-btn hero-btn-primary" href="https://wa.me/201229534310?text=السلام%20عليكم%2C%20عايز%20أطلب%20موقعي%20لكافيهي" target="_blank">☕ اطلب موقعك الآن</a>
+    <a class="hero-btn hero-btn-secondary" href="#packages">📦 شوف الباقات</a>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════
+     9. FOOTER
+     ═══════════════════════════════ -->
 <footer class="site-footer">
   <div class="footer-grid">
     <div>
@@ -2294,7 +2233,6 @@ body {
 </footer>
 
 <script>
-// ========== SCROLL PROGRESS ==========
 const progressBar = document.getElementById('scroll-progress');
 window.addEventListener('scroll', () => {
   const scrollTop = document.documentElement.scrollTop;
@@ -2302,7 +2240,6 @@ window.addEventListener('scroll', () => {
   progressBar.style.width = (scrollTop / scrollHeight * 100) + '%';
 }, { passive: true });
 
-// ========== SCROLL REVEAL ==========
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
     if (entry.isIntersecting) {
@@ -2311,82 +2248,49 @@ const revealObserver = new IntersectionObserver((entries) => {
     }
   });
 }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+document.querySelectorAll('.reveal, .reveal-scale').forEach(el => revealObserver.observe(el));
 
-document.querySelectorAll('.reveal, .reveal-scale').forEach(el => {
-  revealObserver.observe(el);
-});
-
-// ========== TILT EFFECT (desktop only) ==========
 if (window.matchMedia('(min-width: 769px)').matches) {
   document.querySelectorAll('.tilt-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
       const rect = card.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
-      const rotateX = (-y / rect.height * 6).toFixed(2);
-      const rotateY = (x / rect.width * 6).toFixed(2);
-      card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(8px)`;
+      card.style.transform = `perspective(1000px) rotateX(${(-y/rect.height*6).toFixed(2)}deg) rotateY(${(x/rect.width*6).toFixed(2)}deg) translateZ(8px)`;
     });
-    card.addEventListener('mouseleave', () => {
-      card.style.transform = '';
-      setTimeout(() => { card.style.transform = ''; }, 200);
-    });
+    card.addEventListener('mouseleave', () => { card.style.transform = ''; });
   });
-
-  // Pro card has its own scale, adjust tilt
   const proCard = document.querySelector('.pkg-pro');
   if (proCard) {
     proCard.addEventListener('mousemove', (e) => {
       const rect = proCard.getBoundingClientRect();
       const x = e.clientX - rect.left - rect.width / 2;
       const y = e.clientY - rect.top - rect.height / 2;
-      const rX = (-y / rect.height * 5).toFixed(2);
-      const rY = (x / rect.width * 5).toFixed(2);
-      proCard.style.transform = `scale(1.04) perspective(1000px) rotateX(${rX}deg) rotateY(${rY}deg) translateZ(10px) translateY(-6px)`;
+      proCard.style.transform = `scale(1.04) perspective(1000px) rotateX(${(-y/rect.height*5).toFixed(2)}deg) rotateY(${(x/rect.width*5).toFixed(2)}deg) translateZ(10px) translateY(-6px)`;
     });
-    proCard.addEventListener('mouseleave', () => {
-      proCard.style.transform = 'scale(1.02)';
-    });
+    proCard.addEventListener('mouseleave', () => { proCard.style.transform = 'scale(1.02)'; });
   }
 }
 
-// ========== RIPPLE on PRO BUTTON ==========
 document.querySelectorAll('.btn-gold-pro').forEach(btn => {
   btn.addEventListener('click', (e) => {
     const ripple = document.createElement('span');
     const rect = btn.getBoundingClientRect();
     const size = Math.max(rect.width, rect.height);
-    ripple.style.cssText = `
-      position:absolute;width:${size}px;height:${size}px;
-      border-radius:50%;background:rgba(255,255,255,0.25);
-      top:${e.clientY - rect.top - size/2}px;
-      left:${e.clientX - rect.left - size/2}px;
-      transform:scale(0);animation:ripple 0.6s linear;
-      pointer-events:none;
-    `;
+    ripple.style.cssText = `position:absolute;width:${size}px;height:${size}px;border-radius:50%;background:rgba(255,255,255,0.25);top:${e.clientY-rect.top-size/2}px;left:${e.clientX-rect.left-size/2}px;transform:scale(0);animation:ripple 0.6s linear;pointer-events:none;`;
     btn.appendChild(ripple);
     setTimeout(() => ripple.remove(), 600);
   });
 });
 
-// Add ripple keyframe dynamically
 const style = document.createElement('style');
 style.textContent = '@keyframes ripple { to { transform: scale(4); opacity: 0; } }';
 document.head.appendChild(style);
 
-// ========== LAZY LOADING ==========
-if ('loading' in HTMLImageElement.prototype) {
-  document.querySelectorAll('img').forEach(img => img.setAttribute('loading', 'lazy'));
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('.bg-orb, .bg-dots').forEach(el => { el.style.animation = 'none'; });
 }
 
-// ========== REDUCED MOTION ==========
-if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-  document.documentElement.style.setProperty('--transition', '0.01ms');
-  document.querySelectorAll('.bg-orb, .bg-dots, .urgency-inner').forEach(el => {
-    el.style.animation = 'none';
-  });
-}
-// ========== FAQ ACCORDION ==========
 document.querySelectorAll('.faq-q').forEach(btn => {
   btn.addEventListener('click', () => {
     const item = btn.closest('.faq-item');
